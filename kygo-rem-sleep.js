@@ -678,7 +678,7 @@ class KygoRemSleep extends HTMLElement {
   // Centered category tabs; one category's cards show at a time.
   _renderCategoryTabs() {
     return Object.entries(this._categories).map(([k, c]) =>
-      `<button class="cat-tab ${k === this._activeCategory ? 'active' : ''}" data-category="${k}" role="tab" aria-selected="${k === this._activeCategory}">
+      `<button class="cat-tab ${k === this._activeCategory ? 'active' : ''}" data-category="${k}" data-tool-control="category-tab" data-tool-value="${k}" role="tab" aria-selected="${k === this._activeCategory}">
         <span class="cat-tab-icon">${this._icon(c.icon)}</span>
         <span>${c.name}</span>
         <span class="cat-tab-count">${(this._factors[k] || []).length}</span>
@@ -689,7 +689,7 @@ class KygoRemSleep extends HTMLElement {
   _renderSortBar() {
     const opt = (v, l) => `<option value="${v}"${this._sortMode === v ? ' selected' : ''}>${l}</option>`;
     return `<label class="sort-label" for="sort-select">Sort by:</label>
-      <select class="sort-select" id="sort-select">${opt('evidence', 'Evidence Strength')}${opt('direction', 'Effect Direction')}</select>`;
+      <select class="sort-select" id="sort-select" data-tool-control="sort">${opt('evidence', 'Evidence Strength')}${opt('direction', 'Effect Direction')}</select>`;
   }
 
   _renderFactorCards() {
@@ -713,7 +713,7 @@ class KygoRemSleep extends HTMLElement {
     const isExp = this._expandedFactor === f.key;
     return `
       <div class="factor-card ${isExp ? 'expanded' : ''}" data-factor="${f.key}" id="factor-${f.key}">
-        <div class="factor-header" role="button" aria-expanded="${isExp}" tabindex="0">
+        <div class="factor-header" role="button" data-tool-control="factor-dropdown" data-tool-value="${f.key}" aria-expanded="${isExp}" tabindex="0">
           <div class="factor-top">
             <span class="badge-direction" style="color:${dir.color};background:${dir.bg}"><span class="badge-icon">${this._icon(dir.icon)}</span>${dir.label}</span>
             <span class="factor-toggle">${this._icon('chevDown')}</span>
@@ -784,7 +784,7 @@ class KygoRemSleep extends HTMLElement {
       const ev = this._evidenceConfig(f.evidence);
       return `
         <li class="ab-item${i >= visible ? ' ab-extra' : ''}">
-          <button type="button" class="ab-row" data-jump="${f.key}" data-cat="${f.cat}" aria-label="${f.name}: ${r.result}. Open details">
+          <button type="button" class="ab-row" data-jump="${f.key}" data-tool-control="factor-jump" data-tool-value="${f.key}" data-cat="${f.cat}" aria-label="${f.name}: ${r.result}. Open details">
             <span class="ab-ico">${this._icon(r.icon)}</span>
             <span class="ab-main">
               <span class="ab-name">${r.label}</span>
@@ -798,7 +798,7 @@ class KygoRemSleep extends HTMLElement {
         </li>`;
     }).join('');
     const more = rows.length > visible
-      ? `<button type="button" class="ab-toggle" data-ab-more aria-expanded="false"><span class="ab-toggle-lbl">Show all ${rows.length}</span>${this._icon('chevDown')}</button>`
+      ? `<button type="button" class="ab-toggle" data-ab-more data-tool-control="board-expand" data-tool-value="${kind}" aria-expanded="false"><span class="ab-toggle-lbl">Show all ${rows.length}</span>${this._icon('chevDown')}</button>`
       : '';
     return `
       <div class="ab-col ab-col-${kind}">
@@ -834,7 +834,7 @@ class KygoRemSleep extends HTMLElement {
       const isExp = this._expandedTopPick === i;
       return `
         <div class="pick-card ${isExp ? 'expanded' : ''} ${p.warning ? 'pick-warning' : ''} animate-on-scroll" data-pick="${i}" style="--delay:${i * 80}ms">
-          <div class="pick-header" role="button" aria-expanded="${isExp}" tabindex="0">
+          <div class="pick-header" role="button" data-tool-control="pick-dropdown" data-tool-value="${String(p.label).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}" aria-expanded="${isExp}" tabindex="0">
             <div class="pick-icon"><span>${this._icon(p.icon)}</span></div>
             <div class="pick-info">
               <span class="pick-label">${p.label}</span>

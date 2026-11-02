@@ -709,7 +709,7 @@ class KygoWearableAccuracy extends HTMLElement {
 
   _scTabs(views) {
     if (views.length === 1) { const v = views[0]; return `<div class="sc-tabs sc-tabs-one"><span class="sc-tab on">${this._icon(v.icon)}<span class="sc-tl">${v.tab}</span></span></div>`; }
-    return `<div class="sc-tabs" role="tablist">${views.map((v, i) => `<button type="button" class="sc-tab${i ? '' : ' on'}" role="tab" aria-selected="${!i}" data-sc="${v.id}">${this._icon(v.icon)}<span class="sc-tl">${v.tab}</span><span class="sc-ts" aria-hidden="true">${v.tabS}</span></button>`).join('')}</div>`;
+    return `<div class="sc-tabs" role="tablist">${views.map((v, i) => `<button type="button" class="sc-tab${i ? '' : ' on'}" role="tab" aria-selected="${!i}" data-sc="${v.id}" data-tool-control="score-view-tab" data-tool-value="${v.id}">${this._icon(v.icon)}<span class="sc-tl">${v.tab}</span><span class="sc-ts" aria-hidden="true">${v.tabS}</span></button>`).join('')}</div>`;
   }
 
   /**
@@ -1964,7 +1964,7 @@ class KygoWearableAccuracy extends HTMLElement {
   _renderFactCards() {
     const F = this._facts;
     const i0 = this._factIdx || 0;
-    const tabs = F.map((f, i) => `<button type="button" class="fx-tab${i === i0 ? ' on' : ''}" data-fact="${i}" role="tab" aria-selected="${i === i0}" aria-controls="fx-p${i}"><span class="fx-ico">${this._icon(f.icon)}</span><span class="fx-tt"><span class="fx-tag">${f.tag}</span><span class="fx-ttl">${f.title}</span></span></button>`).join('');
+    const tabs = F.map((f, i) => `<button type="button" class="fx-tab${i === i0 ? ' on' : ''}" data-fact="${i}" data-tool-control="finding-tab" data-tool-value="${String(f.tag).toLowerCase().replace(/[^a-z0-9]+/g, '-')}" role="tab" aria-selected="${i === i0}" aria-controls="fx-p${i}"><span class="fx-ico">${this._icon(f.icon)}</span><span class="fx-tt"><span class="fx-tag">${f.tag}</span><span class="fx-ttl">${f.title}</span></span></button>`).join('');
     const panels = F.map((f, i) => `<div class="fx-panel" id="fx-p${i}" role="tabpanel"${i === i0 ? '' : ' hidden'}>
         <span class="fx-tag">${f.tag}</span>
         <div class="fx-stat">${f.stat}</div>
@@ -1976,7 +1976,7 @@ class KygoWearableAccuracy extends HTMLElement {
     return `<div class="fx" data-fx>
       <div class="fx-tabs" role="tablist" aria-label="Findings">${tabs}</div>
       <div class="fx-main">${panels}
-        <div class="fx-nav"><button type="button" class="fx-step" data-fact-step="-1" aria-label="Previous finding">${this._icon('arrowRight')}</button><span class="fx-count" data-fx-count>${i0 + 1} of ${F.length}</span><button type="button" class="fx-step" data-fact-step="1" aria-label="Next finding">${this._icon('arrowRight')}</button></div>
+        <div class="fx-nav"><button type="button" class="fx-step" data-fact-step="-1" data-tool-control="finding-step" data-tool-value="previous" aria-label="Previous finding">${this._icon('arrowRight')}</button><span class="fx-count" data-fx-count>${i0 + 1} of ${F.length}</span><button type="button" class="fx-step" data-fact-step="1" data-tool-control="finding-step" data-tool-value="next" aria-label="Next finding">${this._icon('arrowRight')}</button></div>
       </div>
     </div>`;
   }
@@ -2051,12 +2051,12 @@ class KygoWearableAccuracy extends HTMLElement {
       const bestTxt = best.length ? 'Best for ' + best.join(', ') + (pods.length ? ` · top 3 for ${pods.join(', ')}` : '') : pods.length ? 'Top 3 for ' + pods.join(', ') : 'No podium places';
       return `${i ? '<span class="cx-vsb" aria-hidden="true">VS</span>' : ''}<div class="cx-card">
         ${this._logo(k)}
-        <span class="cx-sel"><select data-cx-slot="${i}" aria-label="Brand ${i + 1}">${opts(k)}</select>${this._icon('chevronDown')}</span>
+        <span class="cx-sel"><select data-cx-slot="${i}" data-tool-control="brand-picker" aria-label="Brand ${i + 1}">${opts(k)}</select>${this._icon('chevronDown')}</span>
         <span class="cx-card-best">${bestTxt}</span>
         <span class="cx-card-sub">${d[k].subscription}</span>
       </div>`;
     };
-    const tab = (id, label, icon, full) => `<button type="button" class="cx-tab${id === this._cmpMetric ? ' on' : ''}" data-cx-metric="${id}" aria-pressed="${id === this._cmpMetric}" title="${full}">${this._icon(icon)}<span>${label}</span></button>`;
+    const tab = (id, label, icon, full) => `<button type="button" class="cx-tab${id === this._cmpMetric ? ' on' : ''}" data-cx-metric="${id}" data-tool-control="metric-tab" data-tool-value="${id}" data-tool-action="select" aria-pressed="${id === this._cmpMetric}" title="${full}">${this._icon(icon)}<span>${label}</span></button>`;
     return `<div class="cx">
       <div class="cx-cards">${sel.map(card).join('')}</div>
       <div class="cx-tabs" role="group" aria-label="Metric">${tab('overview', 'Overview', 'layers', 'Overview')}${this._sections.map(s => tab(s.id, s.nav, s.icon, s.name)).join('')}</div>
@@ -2098,7 +2098,7 @@ class KygoWearableAccuracy extends HTMLElement {
         const w = isWin(k);
         return `<div class="ov-c${w ? ' win' : ''}${cls}">${w ? `<span class="ov-chk">${this._icon('check')}</span>` : ''}<span>${txt}</span></div>`;
       }).join('');
-      return `<button type="button" class="ov-lab" data-cx-metric="${sec.id}">${this._icon(sec.icon)}<span>${sec.nav}</span></button>${cells}`;
+      return `<button type="button" class="ov-lab" data-cx-metric="${sec.id}" data-tool-control="overview-metric" data-tool-value="${sec.id}">${this._icon(sec.icon)}<span>${sec.nav}</span></button>${cells}`;
     }).join('');
     const head = `<div class="ov-h ov-h0">Metric</div>` + sel.map(k => `<div class="ov-h">${this._logo(k, 'sm')}<span>${d[k].short}</span></div>`).join('');
     return `
@@ -2132,7 +2132,7 @@ class KygoWearableAccuracy extends HTMLElement {
       </div>
       <p class="cx-verdict">${sec.short || sec.verdict}</p>
       ${table}
-      <div class="cx-foot"><span>Same figures as the full section, filtered to your brands. A dashed circle means no independent study.</span><button type="button" class="cx-go" data-jump="${id}">Full section and studies ${this._icon('arrowRight')}</button></div>`;
+      <div class="cx-foot"><span>Same figures as the full section, filtered to your brands. A dashed circle means no independent study.</span><button type="button" class="cx-go" data-jump="${id}" data-tool-control="comparator-jump" data-tool-value="${id}">Full section and studies ${this._icon('arrowRight')}</button></div>`;
   }
 
   // ── Hub: metric index + one stacked section per metric ───────────────
@@ -2164,7 +2164,7 @@ class KygoWearableAccuracy extends HTMLElement {
   }
 
   _renderJumpNav() {
-    return `<nav class="jn" aria-label="Jump to a metric">${this._sections.map(s => `<a class="jn-chip" href="#m-${s.id}" data-jump="${s.id}" title="${s.name}">${this._icon(s.icon)}<span>${s.nav}</span></a>`).join('')}</nav>`;
+    return `<nav class="jn" aria-label="Jump to a metric">${this._sections.map(s => `<a class="jn-chip" href="#m-${s.id}" data-jump="${s.id}" data-tool-control="metric-jump" data-tool-value="${s.id}" title="${s.name}">${this._icon(s.icon)}<span>${s.nav}</span></a>`).join('')}</nav>`;
   }
 
   // Hero panel: how much evidence sits behind each brand.

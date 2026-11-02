@@ -104,6 +104,7 @@ class KygoSmartRingComparison extends HTMLElement {
   }
 
   disconnectedCallback() {
+    clearTimeout(this._yearsTrackT);
     if (this._observer) this._observer.disconnect();
   }
 
@@ -1156,7 +1157,7 @@ class KygoSmartRingComparison extends HTMLElement {
   _renderFinder() {
     const active = this._priority;
     const chips = this._criteria.map(c => `
-      <button type="button" class="fchip${active === c.key ? ' on' : ''}" data-crit="${c.key}" aria-pressed="${active === c.key}">
+      <button type="button" class="fchip${active === c.key ? ' on' : ''}" data-crit="${c.key}" data-tool-control="priority-filter" data-tool-value="${c.key}" aria-pressed="${active === c.key}">
         ${this._icon(c.icon)}<span>${c.label}</span>
       </button>
     `).join('');
@@ -1165,7 +1166,7 @@ class KygoSmartRingComparison extends HTMLElement {
       <div class="finder-controls">
         <div class="finder-head">
           <span class="finder-label">What matters most to you?</span>
-          <span class="finder-state">${active ? `Ranked by ${label.toLowerCase()} · <button type="button" class="finder-clear" data-crit-clear>Reset</button>` : 'Pick one'}</span>
+          <span class="finder-state">${active ? `Ranked by ${label.toLowerCase()} · <button type="button" class="finder-clear" data-crit-clear data-tool-control="priority-filter" data-tool-value="reset" data-tool-action="reset">Reset</button>` : 'Pick one'}</span>
         </div>
         <div class="fchips" role="group" aria-label="Ring finder priority">${chips}</div>
       </div>
@@ -1243,7 +1244,7 @@ class KygoSmartRingComparison extends HTMLElement {
       const on = this._cols.includes(m.key);
       const full = !on && this._cols.length >= 4;
       return `
-        <button type="button" class="mp-tile${on ? ' on' : ''}${full ? ' full' : ''}" data-col="${m.key}" aria-pressed="${on}"${full ? ' title="Deselect a model first, four is the maximum"' : ''}>
+        <button type="button" class="mp-tile${on ? ' on' : ''}${full ? ' full' : ''}" data-col="${m.key}" data-tool-control="model-picker" data-tool-value="${m.key}" aria-pressed="${on}"${full ? ' title="Deselect a model first, four is the maximum"' : ''}>
           <span class="mp-logo">${this._brandMark(m.brand)}</span>
           <span class="mp-name">${m.name}</span>
           <span class="mp-price">${this._fmt(m.hw)}</span>
@@ -1253,7 +1254,7 @@ class KygoSmartRingComparison extends HTMLElement {
 
   _renderTabs() {
     return Object.keys(this._specs).map(c => `
-      <button data-tab="${c}" role="tab" aria-selected="${c === this._activeTab}" class="${c === this._activeTab ? 'active' : ''}">
+      <button data-tab="${c}" data-tool-control="spec-tab" data-tool-value="${String(c).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}" role="tab" aria-selected="${c === this._activeTab}" class="${c === this._activeTab ? 'active' : ''}">
         ${c}<span class="ct">${this._specs[c].length}</span>
       </button>
     `).join('');
@@ -1307,7 +1308,7 @@ class KygoSmartRingComparison extends HTMLElement {
 
   _renderFeatTabs() {
     return Object.keys(this._features).map(c => `
-      <button data-ftab="${c}" role="tab" aria-selected="${c === this._featTab}" class="${c === this._featTab ? 'active' : ''}">
+      <button data-ftab="${c}" data-tool-control="feature-tab" data-tool-value="${String(c).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}" role="tab" aria-selected="${c === this._featTab}" class="${c === this._featTab ? 'active' : ''}">
         ${c}<span class="ct">${this._features[c].length}</span>
       </button>
     `).join('');
@@ -1379,7 +1380,7 @@ class KygoSmartRingComparison extends HTMLElement {
 
     const seg = this._models.map(m => {
       const on = this._calcPick.includes(m.key);
-      return `<button data-seg-val="${m.key}" aria-pressed="${on}" class="${on ? 'active' : ''}"><span class="seg-name">${m.name}</span><span class="px">${fmt(m.hw)}${m.sub ? ' + sub' : ''}</span></button>`;
+      return `<button data-seg-val="${m.key}" data-tool-control="calc-ring-picker" data-tool-value="${m.key}" data-tool-action="select" aria-pressed="${on}" class="${on ? 'active' : ''}"><span class="seg-name">${m.name}</span><span class="px">${fmt(m.hw)}${m.sub ? ' + sub' : ''}</span></button>`;
     }).join('');
 
     const gap = aTotal - bTotal;
@@ -1408,7 +1409,7 @@ class KygoSmartRingComparison extends HTMLElement {
         ${plugsRelevant ? `
         <div class="calc-block">
           <div class="label"><span>Ultrahuman add-ons</span></div>
-          <button type="button" class="calc-toggle${plugs ? ' on' : ''}" data-plugs aria-pressed="${plugs}">
+          <button type="button" class="calc-toggle${plugs ? ' on' : ''}" data-plugs data-tool-control="plugs-toggle" data-tool-value="powerplugs" aria-pressed="${plugs}">
             <span class="calc-toggle-box">${plugs ? this._icon('check') : ''}</span>
             <span>Add every PowerPlug ($133/yr, Ultrahuman's own valuation)</span>
           </button>
@@ -1707,6 +1708,13 @@ class KygoSmartRingComparison extends HTMLElement {
       if (e.target.matches('[data-years]')) {
         this._years = +e.target.value;
         this._updateCalc();
+        // GA4 tool_interaction once the slider settles (the calc re-renders
+        // on every input, so the field never reaches a change event).
+        clearTimeout(this._yearsTrackT);
+        this._yearsTrackT = setTimeout(() => {
+          const kt = window.KygoTrack;
+          if (kt && kt.toolInteraction) kt.toolInteraction({ tool: 'kygo-smart-ring-comparison', control: 'years-slider', value: String(this._years), action: 'change' });
+        }, 700);
       }
     });
   }

@@ -471,7 +471,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
       : (v === 'indirect' ? `<span class="dacc-vdot mid" title="Shares Garmin's Firstbeat engine">≈</span>` : `<span class="dacc-vdot no" title="Vendor claims only"><span class="dash"></span></span>`);
     return `<div class="dev-acc">${rows.map(d => `
       <details class="dacc${d.validation === 'validated' ? ' is-validated' : ''}">
-        <summary>
+        <summary data-tool-control="device-dropdown" data-tool-value="${d.key}">
           ${this._deviceLogo(d, 'sm')}
           <span class="dacc-id">
             <span class="dacc-name">${d.name}</span>

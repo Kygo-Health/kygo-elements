@@ -585,7 +585,7 @@ class KygoDeepSleepFactors extends HTMLElement {
   // Category jump-nav chips — clicking scrolls to that category block.
   _renderCategoryNav() {
     return Object.entries(this._categories).map(([k, c]) =>
-      `<button class="cat-chip" data-jump="cat-${k}">
+      `<button class="cat-chip" data-jump="cat-${k}" data-tool-control="category-jump" data-tool-value="${k}">
         <span class="cat-chip-ico">${this._icon(c.icon)}</span>${c.name}<span class="cat-chip-n">${c.count}</span>
       </button>`
     ).join('');
@@ -615,7 +615,7 @@ class KygoDeepSleepFactors extends HTMLElement {
     const isExp = this._expandedFactor === f.key;
     return `
       <div class="factor-card ${isExp ? 'expanded' : ''}" data-factor="${f.key}">
-        <div class="factor-header" role="button" aria-expanded="${isExp}" tabindex="0">
+        <div class="factor-header" role="button" data-tool-control="factor-dropdown" data-tool-value="${f.key}" aria-expanded="${isExp}" tabindex="0">
           <div class="factor-top">
             <span class="badge-direction ${dc.cls}"><span class="badge-icon">${this._icon(dc.icon)}</span>${dc.label}</span>
             <span class="ev-badge ${ev.cls}">${ev.label}</span>
@@ -639,7 +639,7 @@ class KygoDeepSleepFactors extends HTMLElement {
       const isExp = this._expandedTopPick === i;
       return `
         <div class="pick-card ${isExp ? 'expanded' : ''} ${p.warning ? 'pick-warning' : ''} animate-on-scroll" data-pick="${i}" style="--delay:${i * 80}ms">
-          <div class="pick-header" role="button" aria-expanded="${isExp}" tabindex="0">
+          <div class="pick-header" role="button" data-tool-control="pick-dropdown" data-tool-value="${String(p.label).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}" aria-expanded="${isExp}" tabindex="0">
             <div class="pick-icon"><span>${this._icon(p.icon)}</span></div>
             <div class="pick-info">
               <span class="pick-label">${p.label}</span>

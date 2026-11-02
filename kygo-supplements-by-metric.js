@@ -343,7 +343,7 @@ class KygoSupplementsByMetric extends HTMLElement {
       const count = this._cellsForMetric(mt.key).length;
       const active = this._metricFilter === mt.key;
       return `
-        <button class="picker-tile ${active ? 'active' : ''}" data-metric="${mt.key}" aria-pressed="${active}">
+        <button class="picker-tile ${active ? 'active' : ''}" data-metric="${mt.key}" data-tool-control="metric-picker" data-tool-value="${mt.key}" data-tool-action="select" aria-pressed="${active}">
           <span class="picker-tile-main"><span class="picker-tile-ic" aria-hidden="true">${this._icon(mt.icon)}</span><span class="picker-tile-name">${mt.tileLabel || mt.label}</span></span>
           <span class="picker-tile-count">${count}</span>
         </button>`;
@@ -375,7 +375,7 @@ class KygoSupplementsByMetric extends HTMLElement {
 
     return `
       <article class="fact-card ${isExp ? 'expanded' : ''}" data-sup-key="${s.key}">
-        <button class="fact-head" aria-expanded="${isExp}">
+        <button class="fact-head" data-tool-control="supplement-dropdown" data-tool-value="${s.key}" aria-expanded="${isExp}">
           ${flag ? `<span class="fact-flag">${this._icon('alert')} ${c.flagLabel || 'Industry-funded'}</span>` : ''}
           <span class="fact-row">
             <span class="fact-name">${s.name}</span>

@@ -645,7 +645,7 @@ class KygoRhrFactors extends HTMLElement {
       const isRaises = v > 0;
       return `
         <div class="imp-row" style="--delay:${i * 30}ms">
-          <button class="imp-label" data-fact-jump="${f.key}" aria-label="Jump to ${f.name}">
+          <button class="imp-label" data-fact-jump="${f.key}" data-tool-control="factor-jump" data-tool-value="${f.key}" aria-label="Jump to ${f.name}">
             ${f.name}
           </button>
           <div class="imp-track">
@@ -697,7 +697,7 @@ class KygoRhrFactors extends HTMLElement {
       const count = flat.filter(f => f.category === k).length;
       const isActive = picked === k;
       return `
-        <button class="picker-tile ${isActive ? 'active' : ''}" data-factors-cat="${k}" aria-pressed="${isActive}">
+        <button class="picker-tile ${isActive ? 'active' : ''}" data-factors-cat="${k}" data-tool-control="category-picker" data-tool-value="${k}" aria-pressed="${isActive}">
           <span class="picker-tile-name">${m.label}</span>
           <span class="picker-tile-count">${count}</span>
         </button>`;
@@ -757,7 +757,7 @@ class KygoRhrFactors extends HTMLElement {
           <span class="list-sort-label">Sort by</span>
         </div>
         <div class="list-sort-btns">
-          ${opts.map(o => `<button class="list-sort-btn ${this._listSort === o.k ? 'active' : ''}" data-sort="${o.k}">${o.l}</button>`).join('')}
+          ${opts.map(o => `<button class="list-sort-btn ${this._listSort === o.k ? 'active' : ''}" data-sort="${o.k}" data-tool-control="sort" data-tool-value="${o.k}">${o.l}</button>`).join('')}
         </div>
       </div>`;
   }
@@ -789,7 +789,7 @@ class KygoRhrFactors extends HTMLElement {
       const eff = this._effectSizeText(f);
       return `
         <article class="fact-card ${this._dirClass(f.direction)} ${isExp ? 'expanded' : ''}" data-fact-key="${f.key}">
-          <button class="fact-head" aria-expanded="${isExp}">
+          <button class="fact-head" data-tool-control="factor-dropdown" data-tool-value="${f.key}" aria-expanded="${isExp}">
             <span class="fact-meta">
               <span class="fact-cat" data-cat="${f.category}">${(meta[f.category] || {}).label || ''}</span>
               <span class="fact-name">${f.name}</span>
@@ -832,7 +832,7 @@ class KygoRhrFactors extends HTMLElement {
     const ev = this._evidenceConfig(f.evidence);
     return `
       <article class="base-card ${isExp ? 'expanded' : ''}" data-base-key="${f.key}">
-        <button class="base-head" aria-expanded="${isExp}">
+        <button class="base-head" data-tool-control="baseline-dropdown" data-tool-value="${f.key}" aria-expanded="${isExp}">
           <span class="base-meta">
             <span class="base-name">${f.name}</span>
             <span class="base-effect">${f.effect}</span>
@@ -877,7 +877,7 @@ class KygoRhrFactors extends HTMLElement {
     const tiles = groups.map(g => {
       const isActive = picked === g;
       return `
-        <button class="picker-tile ${isActive ? 'active' : ''}" data-myths-cat="${g}" aria-pressed="${isActive}">
+        <button class="picker-tile ${isActive ? 'active' : ''}" data-myths-cat="${g}" data-tool-control="myth-category-picker" data-tool-value="${g}" aria-pressed="${isActive}">
           <span class="picker-tile-name">${g}</span>
           <span class="picker-tile-count">${counts[g]}</span>
         </button>`;

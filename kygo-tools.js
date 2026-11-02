@@ -937,7 +937,7 @@ class KygoToolsPage extends HTMLElement {
           </div>
           <span class="feat-rule"></span>
         </header>
-        <a class="feat-card" href="${tool.url || '#'}" data-open-tool="${tool.url || '#'}" aria-label="${tool.title}">
+        <a class="feat-card" href="${tool.url || '#'}" data-open-tool="${tool.url || '#'}" data-tool-control="featured-tool-card" data-tool-value="${String(tool.url || '').split('/').filter(Boolean).pop() || ''}" data-tool-action="open" aria-label="${tool.title}">
           <div class="feat-scene">
             <div class="feat-panel">
               <div class="feat-panel-cap">Accuracy leader by metric</div>
@@ -961,7 +961,7 @@ class KygoToolsPage extends HTMLElement {
   _renderCard(tool) {
     const motif = this._motifFor(tool);
     return `
-      <a class="tool-card" href="${tool.url || '#'}" data-open-tool="${tool.url || '#'}" aria-label="${tool.title}">
+      <a class="tool-card" href="${tool.url || '#'}" data-open-tool="${tool.url || '#'}" data-tool-control="tool-card" data-tool-value="${String(tool.url || '').split('/').filter(Boolean).pop() || ''}" data-tool-action="open" aria-label="${tool.title}">
         <div class="card-media">
           <div class="card-panel">
             <div class="panel-cap">${motif.caption || ''}</div>
@@ -1045,7 +1045,7 @@ class KygoToolsPage extends HTMLElement {
               <span class="brand-name">Kygo</span>
               <span class="brand-sub">/ Tools</span>
             </a>
-            <button class="icon-btn" aria-label="Share" data-share>${this._getIcon('share')}</button>
+            <button class="icon-btn" aria-label="Share" data-share data-tool-control="share" data-tool-value="tools-hub">${this._getIcon('share')}</button>
           </header>
 
           <div class="hero">

@@ -565,7 +565,7 @@ class KygoSleepMetrics extends HTMLElement {
 
   _renderCategoryTabs() {
     return Object.entries(this._categories).map(([k, c]) =>
-      `<button class="cat-tab ${k === this._activeCategory ? 'active' : ''}" data-category="${k}" role="tab" aria-selected="${k === this._activeCategory}">
+      `<button class="cat-tab ${k === this._activeCategory ? 'active' : ''}" data-category="${k}" data-tool-control="category-tab" data-tool-value="${k}" role="tab" aria-selected="${k === this._activeCategory}">
         <span class="cat-tab-icon">${this._icon(c.icon)}</span>
         <span>${c.name}</span>
       </button>`
@@ -591,7 +591,7 @@ class KygoSleepMetrics extends HTMLElement {
           const hasAnyDesc = deviceKeys.some(dk => m[dk].has && m[dk].desc);
           return `
             <div class="grid-row-wrap ${isExpanded ? 'expanded' : ''} ${hasAnyDesc ? 'expandable' : ''}" data-metric="${m.key}">
-              <div class="grid-row"${hasAnyDesc ? ' role="button" tabindex="0" aria-expanded="' + (isExpanded ? 'true' : 'false') + '"' : ''}>
+              <div class="grid-row"${hasAnyDesc ? ' role="button" tabindex="0" data-tool-control="metric-dropdown" data-tool-value="' + m.key + '" aria-expanded="' + (isExpanded ? 'true' : 'false') + '"' : ''}>
                 <div class="grid-metric-name">${m.name}${hasAnyDesc ? `<span class="grid-expand-icon">${this._icon('chevDown')}</span>` : ''}</div>
                 ${deviceKeys.map(dk => `<div class="grid-cell">${m[dk].has ? `<span class="cell-check">${this._icon('check')}</span>` : `<span class="cell-dash">${this._icon('minus')}</span>`}</div>`).join('')}
               </div>
@@ -617,7 +617,7 @@ class KygoSleepMetrics extends HTMLElement {
       const isExpanded = this._expandedExclusive === dk;
       return `
         <div class="excl-card ${isExpanded ? 'expanded' : ''}" data-exclusive="${dk}" style="--delay:${i * 100}ms">
-          <div class="excl-header" role="button" aria-expanded="${isExpanded}">
+          <div class="excl-header" role="button" data-tool-control="exclusive-dropdown" data-tool-value="${dk}" aria-expanded="${isExpanded}">
             <img src="${d.imageUrl}" alt="${d.name}" class="excl-img" loading="lazy" />
             <div class="excl-info">
               <h3><a href="${d.affiliateUrl}" class="excl-name-link" target="_blank" rel="noopener sponsored" data-track-label="${d.trackLabel}">${d.name}</a></h3>

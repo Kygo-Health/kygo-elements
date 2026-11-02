@@ -97,6 +97,7 @@ class KygoOuraVsRingConn extends HTMLElement {
   }
 
   disconnectedCallback() {
+    clearTimeout(this._yearsTrackT);
     if (this._observer) this._observer.disconnect();
   }
 
@@ -978,7 +979,7 @@ class KygoOuraVsRingConn extends HTMLElement {
 
   _renderTabs() {
     return Object.keys(this._specs).map(c => `
-      <button data-tab="${c}" role="tab" aria-selected="${c===this._activeTab}" class="${c===this._activeTab?'active':''}">
+      <button data-tab="${c}" data-tool-control="spec-tab" data-tool-value="${String(c).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}" role="tab" aria-selected="${c===this._activeTab}" class="${c===this._activeTab?'active':''}">
         ${c}<span class="ct">${this._specs[c].length}</span>
       </button>
     `).join('');
@@ -1038,7 +1039,7 @@ class KygoOuraVsRingConn extends HTMLElement {
 
   _renderFeatTabs() {
     return Object.keys(this._features).map(c => `
-      <button data-ftab="${c}" role="tab" aria-selected="${c===this._featTab}" class="${c===this._featTab?'active':''}">
+      <button data-ftab="${c}" data-tool-control="feature-tab" data-tool-value="${String(c).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}" role="tab" aria-selected="${c===this._featTab}" class="${c===this._featTab?'active':''}">
         ${c}<span class="ct">${this._features[c].length}</span>
       </button>
     `).join('');
@@ -1109,16 +1110,16 @@ class KygoOuraVsRingConn extends HTMLElement {
         <div class="calc-block">
           <div class="label"><img src="${ouraImg}" alt="" /><span>Oura model</span></div>
           <div class="seg" data-seg="oura" role="group" aria-label="Oura model">
-            <button data-val="ring5" aria-pressed="${pick==='ring5'}" class="${pick==='ring5'?'active':''}">Ring 5 <span class="px">$399</span></button>
-            <button data-val="ring4" aria-pressed="${pick==='ring4'}" class="${pick==='ring4'?'active':''}">Ring 4 <span class="px">$349</span></button>
+            <button data-val="ring5" data-tool-control="oura-picker" data-tool-value="ring5" data-tool-action="select" aria-pressed="${pick==='ring5'}" class="${pick==='ring5'?'active':''}">Ring 5 <span class="px">$399</span></button>
+            <button data-val="ring4" data-tool-control="oura-picker" data-tool-value="ring4" data-tool-action="select" aria-pressed="${pick==='ring4'}" class="${pick==='ring4'?'active':''}">Ring 4 <span class="px">$349</span></button>
           </div>
         </div>
         <div class="calc-block">
           <div class="label"><img src="${ringconnImg}" alt="" /><span>RingConn model</span></div>
           <div class="seg" data-seg="rival" role="group" aria-label="RingConn model">
-            <button data-val="gen3" aria-pressed="${rival==='gen3'}" class="${rival==='gen3'?'active':''}">Gen 3 <span class="px">$349 · no sub</span></button>
-            <button data-val="gen2" aria-pressed="${rival==='gen2'}" class="${rival==='gen2'?'active':''}">Gen 2 <span class="px">$299 · no sub</span></button>
-            <button data-val="gen2air" aria-pressed="${rival==='gen2air'}" class="${rival==='gen2air'?'active':''}">Gen 2 Air <span class="px">$199 · no sub</span></button>
+            <button data-val="gen3" data-tool-control="rival-picker" data-tool-value="gen3" data-tool-action="select" aria-pressed="${rival==='gen3'}" class="${rival==='gen3'?'active':''}">Gen 3 <span class="px">$349 · no sub</span></button>
+            <button data-val="gen2" data-tool-control="rival-picker" data-tool-value="gen2" data-tool-action="select" aria-pressed="${rival==='gen2'}" class="${rival==='gen2'?'active':''}">Gen 2 <span class="px">$299 · no sub</span></button>
+            <button data-val="gen2air" data-tool-control="rival-picker" data-tool-value="gen2air" data-tool-action="select" aria-pressed="${rival==='gen2air'}" class="${rival==='gen2air'?'active':''}">Gen 2 Air <span class="px">$199 · no sub</span></button>
           </div>
         </div>
         <div class="calc-block">
@@ -1296,6 +1297,13 @@ class KygoOuraVsRingConn extends HTMLElement {
       if (e.target.matches('[data-years]')) {
         this._years = +e.target.value;
         this._updateCalc();
+        // GA4 tool_interaction once the slider settles (the calc re-renders
+        // on every input, so the field never reaches a change event).
+        clearTimeout(this._yearsTrackT);
+        this._yearsTrackT = setTimeout(() => {
+          const kt = window.KygoTrack;
+          if (kt && kt.toolInteraction) kt.toolInteraction({ tool: 'kygo-oura-vs-ringconn', control: 'years-slider', value: String(this._years), action: 'change' });
+        }, 700);
       }
     });
   }

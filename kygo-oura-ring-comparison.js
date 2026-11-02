@@ -95,6 +95,7 @@ class KygoOuraRingComparison extends HTMLElement {
   }
 
   disconnectedCallback() {
+    clearTimeout(this._yearsTrackT);
     if (this._observer) this._observer.disconnect();
     if (this._bannerObserver) this._bannerObserver.disconnect();
     const host = this.querySelector('[data-hlth-ad]');
@@ -1027,7 +1028,7 @@ class KygoOuraRingComparison extends HTMLElement {
 
   _renderTabs() {
     return Object.keys(this._specs).map(c => `
-      <button data-tab="${c}" class="${c===this._activeTab?'active':''}">
+      <button data-tab="${c}" data-tool-control="spec-tab" data-tool-value="${String(c).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}" class="${c===this._activeTab?'active':''}">
         ${c}<span class="ct">${this._specs[c].length}</span>
       </button>
     `).join('');
@@ -1106,16 +1107,16 @@ class KygoOuraRingComparison extends HTMLElement {
         <div class="calc-block">
           <div class="label"><img src="${ouraImg}" alt="" /><span>Oura ring</span></div>
           <div class="seg" data-seg="oura">
-            <button data-val="ring4" class="${pick==='ring4'?'active':''}">Ring 4 <span class="px">$349</span></button>
-            <button data-val="ring5" class="${pick==='ring5'?'active':''}">Ring 5 <span class="px">$399</span></button>
-            <button data-val="ring5p" class="${pick==='ring5p'?'active':''}">Ring 5 Premium <span class="px">$499</span></button>
+            <button data-val="ring4" data-tool-control="oura-picker" data-tool-value="ring4" data-tool-action="select" class="${pick==='ring4'?'active':''}">Ring 4 <span class="px">$349</span></button>
+            <button data-val="ring5" data-tool-control="oura-picker" data-tool-value="ring5" data-tool-action="select" class="${pick==='ring5'?'active':''}">Ring 5 <span class="px">$399</span></button>
+            <button data-val="ring5p" data-tool-control="oura-picker" data-tool-value="ring5p" data-tool-action="select" class="${pick==='ring5p'?'active':''}">Ring 5 Premium <span class="px">$499</span></button>
           </div>
         </div>
         <div class="calc-block">
           <div class="label"><img src="${rivalImg}" alt="" /><span>Subscription-free rival</span></div>
           <div class="seg" data-seg="rival">
-            <button data-val="ringconn" class="${rival==='ringconn'?'active':''}">RingConn Gen 2 <span class="px">$299 · no sub</span></button>
-            <button data-val="ultrahuman" class="${rival==='ultrahuman'?'active':''}">Ultrahuman Ring Air <span class="px">$349 · no sub</span></button>
+            <button data-val="ringconn" data-tool-control="rival-picker" data-tool-value="ringconn" data-tool-action="select" class="${rival==='ringconn'?'active':''}">RingConn Gen 2 <span class="px">$299 · no sub</span></button>
+            <button data-val="ultrahuman" data-tool-control="rival-picker" data-tool-value="ultrahuman" data-tool-action="select" class="${rival==='ultrahuman'?'active':''}">Ultrahuman Ring Air <span class="px">$349 · no sub</span></button>
           </div>
         </div>
         <div class="calc-block">
@@ -1291,6 +1292,13 @@ class KygoOuraRingComparison extends HTMLElement {
       if (e.target.matches('[data-years]')) {
         this._years = +e.target.value;
         this._updateCalc();
+        // GA4 tool_interaction once the slider settles (the calc re-renders
+        // on every input, so the field never reaches a change event).
+        clearTimeout(this._yearsTrackT);
+        this._yearsTrackT = setTimeout(() => {
+          const kt = window.KygoTrack;
+          if (kt && kt.toolInteraction) kt.toolInteraction({ tool: 'kygo-oura-ring-comparison', control: 'years-slider', value: String(this._years), action: 'change' });
+        }, 700);
       }
     });
   }

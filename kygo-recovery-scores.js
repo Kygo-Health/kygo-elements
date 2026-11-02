@@ -861,7 +861,7 @@ class KygoRecoveryScores extends HTMLElement {
       const isOpen = expanded === key;
       return `
         <div class="dd-row ${isOpen ? 'open' : ''}" style="--accent:${d.color};--delay:${i * 30}ms">
-          <button class="dd-row-head" type="button" data-device-row="${key}" aria-expanded="${isOpen}">
+          <button class="dd-row-head" type="button" data-device-row="${key}" data-tool-control="device-dropdown" data-tool-value="${key}" aria-expanded="${isOpen}">
             ${img
               ? `<span class="dd-img"><img src="${img}" alt="${d.name}" loading="lazy" /></span>`
               : `<span class="dd-img dd-img--icon" aria-hidden="true">${this._icon('watch')}</span>`}
@@ -979,7 +979,7 @@ class KygoRecoveryScores extends HTMLElement {
 
     return `
       <article class="fact-card ${isExp ? 'expanded' : ''}" data-fact-key="${f.key}">
-        <button class="fact-head" aria-expanded="${isExp}">
+        <button class="fact-head" data-tool-control="factor-dropdown" data-tool-value="${f.key}" aria-expanded="${isExp}">
           <span class="fact-meta">
             <span class="fact-cat">${catLbl} <span class="fact-dir ${dirCls}" aria-hidden="true">${dirArrow}</span></span>
             <span class="fact-name">${f.name}</span>
@@ -996,7 +996,7 @@ class KygoRecoveryScores extends HTMLElement {
     // Until a category is picked, prompt instead of dumping all 35 cards (too long on mobile).
     if (!this._categoryFilter) {
       const cats = this._factorCategories.map(c =>
-        `<button class="fact-prompt-chip" data-cat="${c.key}">${c.label}</button>`).join('');
+        `<button class="fact-prompt-chip" data-cat="${c.key}" data-tool-control="category-picker" data-tool-value="${c.key}">${c.label}</button>`).join('');
       return `
         <div class="fact-prompt">
           <span class="fact-prompt-ic" aria-hidden="true">${this._icon('activity')}</span>
@@ -1040,7 +1040,7 @@ class KygoRecoveryScores extends HTMLElement {
       const count = this._allFactors.filter(f => c.cats.includes(f.cat)).length;
       const isActive = this._categoryFilter === c.key;
       return `
-        <button class="picker-tile ${isActive ? 'active' : ''}" data-cat="${c.key}" aria-pressed="${isActive}">
+        <button class="picker-tile ${isActive ? 'active' : ''}" data-cat="${c.key}" data-tool-control="category-picker" data-tool-value="${c.key}" aria-pressed="${isActive}">
           <span class="picker-tile-main"><span class="picker-tile-ic" aria-hidden="true">${this._icon(c.icon)}</span><span class="picker-tile-name">${c.label}</span></span>
           <span class="picker-tile-count">${count}</span>
         </button>`;

@@ -600,7 +600,7 @@ class KygoAccuracyFactors extends HTMLElement {
 
     return `
       <article class="ac-card ${isExp ? 'expanded' : ''}" data-ckey="${card.key}">
-        <button class="ac-head" aria-expanded="${isExp}" aria-controls="acb-${card.key}">
+        <button class="ac-head" data-tool-control="factor-dropdown" data-tool-value="${card.key}" aria-expanded="${isExp}" aria-controls="acb-${card.key}">
           <span class="ac-top">
             <span class="ac-ico" aria-hidden="true">${this._icon(card.ic)}</span>
             <span class="ac-text">

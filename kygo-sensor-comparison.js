@@ -755,6 +755,9 @@ class KygoSensorComparison extends HTMLElement {
         if (!this._radarLegendAreas) return;
         for (const area of this._radarLegendAreas) {
           if (mx >= area.x && mx <= area.x + area.w && my >= area.y && my <= area.y + area.h) {
+            const shown = !this._radarVisibleBrands || this._radarVisibleBrands.includes(area.key);
+            const kt = window.KygoTrack;
+            if (kt && kt.toolInteraction) kt.toolInteraction({ tool: 'kygo-sensor-comparison', control: 'radar-brand', value: area.key, action: !this._radarVisibleBrands ? 'select' : (shown ? 'deselect' : 'select') });
             if (!this._radarVisibleBrands) {
               this._radarVisibleBrands = [area.key];
             } else if (this._radarVisibleBrands.includes(area.key)) {
@@ -822,7 +825,7 @@ class KygoSensorComparison extends HTMLElement {
       { key: 'algorithms', label: 'Software Algorithms', icon: 'code' }
     ];
     return tabs.map(t =>
-      `<button class="main-tab ${t.key === this._activeTab ? 'active' : ''}" data-tab="${t.key}" role="tab" aria-selected="${t.key === this._activeTab}">
+      `<button class="main-tab ${t.key === this._activeTab ? 'active' : ''}" data-tab="${t.key}" data-tool-control="section-tab" data-tool-value="${t.key}" role="tab" aria-selected="${t.key === this._activeTab}">
         <span class="tab-icon">${this._icon(t.icon)}</span>
         <span>${t.label}</span>
       </button>`
@@ -919,7 +922,7 @@ class KygoSensorComparison extends HTMLElement {
       const isExpanded = this._expandedAlgo === bk;
       return `
         <div class="algo-card ${isExpanded ? 'expanded' : ''}" data-algo="${bk}" style="--delay:${i * 80}ms; --accent:${brandColors[bk]}">
-          <div class="algo-header" role="button" tabindex="0" aria-expanded="${isExpanded}">
+          <div class="algo-header" role="button" tabindex="0" data-tool-control="algorithm-dropdown" data-tool-value="${bk}" aria-expanded="${isExpanded}">
             <div class="algo-brand">
               <span class="algo-dot" style="background:${brandColors[bk]}"></span>
               <h3>${brandNames[bk]}</h3>
@@ -1912,6 +1915,8 @@ class KygoSensorComparison extends HTMLElement {
         this._expandedAlgo = this._expandedAlgo === key ? null : key;
         shadow.querySelectorAll('.algo-card').forEach(c => {
           c.classList.toggle('expanded', c.dataset.algo === this._expandedAlgo);
+          const hdr = c.querySelector('.algo-header');
+          if (hdr) hdr.setAttribute('aria-expanded', c.dataset.algo === this._expandedAlgo ? 'true' : 'false');
         });
         return;
       }

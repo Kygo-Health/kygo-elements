@@ -216,7 +216,7 @@ by walking the path for a registered custom-element tag (`customElements.get(...
 | `page_view` | automatic on load (gtag config) | standard GA4 |
 | `cta_click` | any classified `<a>`/`<button>`/`[data-action]` click, left click or middle click (`auxclick` with button 1, since 2026-11-01; a left click never fires `auxclick`, so nothing is counted twice) | `cta_category`, `cta_label`, `cta_url`, `component`, `position`, `page_path` (+ `affiliate`, `affiliate_marketplace` for Amazon; + `to_tool` for related-tools cards; + `to_post` for related-reading cards; + `action_type` = the `data-action` value for `other_action`) |
 | `cta_view` | a CTA half on screen, once per CTA: blog HTML-embed cards via `postMessage` (`component: 'kygo-blog-embed'`), and since 2026-11-01 `<kygo-app-card>` and `<kygo-cta>` in the page itself (see "In-page CTA impressions") | `cta_label`, `component`, `position`, `page_path` (+ `cta_content`) |
-| `tool_interaction` | any control a tool declares with `data-tool-control` (click, or `change` for a field), `window.KygoTrack.toolInteraction(...)`, and the legacy calculate/compare/analyze buttons (see "Tool interactions") | `tool_name` (= component tag), `action`, `page_path`, `visit_campaign` (+ `tool_control`, `tool_value`, `button_label`, `visit_content`) |
+| `tool_interaction` | any control a tool declares with `data-tool-control` (a click, Enter / Space on a non-native control, or a field's new value), `window.KygoTrack.toolInteraction(...)`, and the legacy calculate/compare/analyze buttons (see "Tool interactions") | `tool_name` (= component tag), `action`, `page_path`, `visit_campaign` (+ `tool_control`, `tool_value`, `button_label`, `visit_content`) |
 | `page_exit` | `visibilitychange` → hidden | `page_path` |
 | `email_subscribe` **(key event)** | `subscribe` CustomEvent (any subscribe form) → mirrored to GA4 | `lead_type` (`newsletter`), `component`, **`source`**, `page_path` |
 | `contact_submit` **(key event)** | `contactSubmitted` CustomEvent, which `kygo-contact.js` fires only when the host confirms the send (`data-form-result="success"`), since 2026-11-01. Before that it fired on `contactSubmit`, the attempt, so it counted sends that later failed | `lead_type` (`contact_form`), `component`, `page_path`. **No PII** — email/name/message are never read from `detail` |
@@ -352,16 +352,27 @@ One shared path for every tool, so no tool writes its own GA4 call. Declare the 
 <input type="range" data-tool-control="nights" />
 ```
 
-`kygo-tracking.js` reads a click on any element with `data-tool-control` (not a form field), and a
-`change` on a form field that has one, through shadow roots. Anything else (a drag, a custom
-widget) calls `window.KygoTrack.toolInteraction({tool, control, value, action, label})`.
+`kygo-tracking.js` reads, through shadow roots:
+
+- a **click** on any element with `data-tool-control` that is not a form field (a button, a link, a
+  `<summary>`, a `div role="button"`). A link or `data-action` element *inside* a control (the
+  affiliate name link in a sleep-metrics card header) stays that link's own `cta_click`;
+- **Enter / Space** on a declared control that is not a native button, link, field or `<summary>`
+  (an accordion `div`), sent only when the tool handled the key (`preventDefault`) and never twice
+  when the tool answers the key with `el.click()`;
+- a **form field's new value**, from the composed `input` event (a `change` event never leaves a
+  shadow root): select / checkbox / radio at once, a range once it has rested 700 ms, a text or
+  search field on its own `change` (Enter or leaving it), never per keystroke.
+
+Anything else (a drag, a canvas, a re-rendered slider) calls
+`window.KygoTrack.toolInteraction({tool, control, value, action, label})`.
 
 | Param | Value |
 |---|---|
 | `tool_name` | `data-tool-name`, else the component tag (`kygo-sleep-tracker-accuracy`) |
 | `tool_control` | `data-tool-control` (`device-picker`) |
 | `tool_value` | `data-tool-value`, else the field's value (checkbox: true/false), else the label; max 100 chars |
-| `action` | `data-tool-action`, else `select` / `deselect` from `aria-pressed` before the click, else `click` / `change`; legacy buttons keep `calculate` etc. |
+| `action` | `data-tool-action`, else read from the state before the click: `aria-pressed` gives `select` / `deselect`, `aria-expanded` (or a `<summary>`'s `<details>` open state) gives `expand` / `collapse`, a tab (`aria-selected`) gives `select`; else `click` / `change`. Legacy buttons keep `calculate` etc. Radio-like pickers (one choice always on) set `data-tool-action="select"` so a click on the current choice is not reported as `deselect` |
 | `button_label` | the element's label (`data-track-label` or text) |
 | `page_path` | the page |
 | `visit_campaign` | the session's `utm_campaign`, `reddit-organic`, or `none` |
@@ -369,19 +380,52 @@ widget) calls `window.KygoTrack.toolInteraction({tool, control, value, action, l
 
 The legacy `data-action="calculate"` buttons (calorie-burn-accuracy) keep `tool_name`, `action` and
 `button_label` and since 2026-11-02 also carry `page_path` and `visit_campaign` / `visit_content`.
+Enter in its calories field (which calculates without the button) sends the same event with
+`button_label: 'enter-key'`.
 
-A control that is clicked counts each attempt (the sleep picker's 2 to 4 limit can refuse one).
-Register `tool_control`, `tool_value`, `visit_campaign`, `visit_content` as GA4 event-scoped custom
-dimensions to report on them.
+A control that is clicked counts each attempt (a picker's minimum / maximum can refuse one).
+`tool_control`, `tool_value`, `visit_campaign`, `visit_content` are registered as GA4 event-scoped
+custom dimensions (owner, 2026-11-02).
 
-Wired: `kygo-sleep-tracker-accuracy` device picker. Still to wire (their main control):
-heart-rate-accuracy and step-count-accuracy (brand picker), oura-5-vs-4, sleep-metrics and
-supplements-by-metric (metric tabs), hrv-factors, rem-sleep, sleep-latency-factors, wearable-accuracy
-and wearable-stress (select), fitbit-air-vs-whoop, oura-ring-comparison, oura-vs-ringconn,
-smart-ring-comparison and sensor-comparison (tabs, range sliders), vo2max-factors (filters),
-calorie-burn-accuracy (already sends the legacy calculate event), deep-sleep-factors,
-staying-asleep-factors, rhr-factors, recovery-scores, vo2max-accuracy, accuracy-factors and
-food-and-sleep (check each for a picker), tools hub (category filter).
+**Wired (2026-11-02), `tool_control` names by tool.** Names are shared across tools; values are
+stable ids or slugs, never translated labels.
+
+| Tool (tag) | `tool_control` values |
+|---|---|
+| `kygo-sleep-tracker-accuracy` | `device-picker` |
+| `kygo-heart-rate-accuracy` | `brand-picker`, `view-toggle` (day / night) |
+| `kygo-step-count-accuracy` | `brand-picker` |
+| `kygo-oura-5-vs-4` | `metric-tab`, `tier-picker`, `billing-picker`, `case-toggle` (checkbox) |
+| `kygo-sleep-metrics` | `category-tab`, `metric-dropdown`, `exclusive-dropdown` |
+| `kygo-supplements-by-metric` | `metric-picker`, `supplement-dropdown` |
+| `kygo-hrv-factors`, `kygo-rem-sleep`, `kygo-sleep-latency-factors` | `category-tab`, `sort` (select), `factor-dropdown`, `pick-dropdown`, `factor-jump`, `board-expand` |
+| `kygo-deep-sleep-factors` | `category-jump`, `factor-dropdown`, `pick-dropdown` |
+| `kygo-staying-asleep-factors` | `view-tab`, `category-filter`, `chart-factor`, `sort`, `factor-dropdown` |
+| `kygo-rhr-factors` | `category-picker`, `myth-category-picker`, `sort`, `factor-dropdown`, `factor-jump`, `baseline-dropdown` |
+| `kygo-wearable-accuracy` | `brand-picker` (select), `metric-tab`, `overview-metric`, `metric-jump`, `comparator-jump`, `score-view-tab`, `finding-tab`, `finding-step` |
+| `kygo-wearable-stress` | `device-picker` (select), `category-picker`, `device-dropdown`, `factor-dropdown` |
+| `kygo-recovery-scores` | `category-picker`, `device-dropdown`, `factor-dropdown` |
+| `kygo-fitbit-air-vs-whoop` | `spec-tab`, `whoop-picker`, `air-picker`, `years-slider` |
+| `kygo-oura-ring-comparison` | `spec-tab`, `oura-picker`, `rival-picker`, `years-slider` |
+| `kygo-oura-vs-ringconn` | `spec-tab`, `feature-tab`, `oura-picker`, `rival-picker`, `years-slider` |
+| `kygo-smart-ring-comparison` | `priority-filter`, `model-picker`, `spec-tab`, `feature-tab`, `calc-ring-picker`, `plugs-toggle`, `years-slider` |
+| `kygo-sensor-comparison` | `section-tab`, `algorithm-dropdown`, `radar-brand` (canvas legend) |
+| `kygo-vo2max-factors` | `direction-filter`, `evidence-filter`, `search`, `category-dropdown`, `factor-dropdown`, `factor-jump` |
+| `kygo-vo2max-accuracy` | `device-dropdown` |
+| `kygo-accuracy-factors` | `factor-dropdown` |
+| `kygo-food-and-sleep` | `stage-tab`, `food-jump`, `food-dropdown` |
+| `kygo-calorie-burn-accuracy` | `device-picker`, `activity-picker` (plus the legacy `calculate`) |
+| `calories-in-anything` (calorie scanner) | `photo-upload` (upload / camera / zone / drop), `scan-reset`, `share` |
+| `kygo-tools-page` (tools hub) | `tool-card`, `featured-tool-card` (action `open`, value = tool slug), `share` |
+
+`years-slider` (the ring calculators re-render the slider on every input) and `radar-brand` (a canvas)
+call `KygoTrack.toolInteraction` from the component; the slider sends once it has rested 700 ms.
+
+Not wired, on purpose: FAQ accordions and the "show all sources" toggles (content, not tool use);
+the vo2max-factors "Reset" button (already a `cta_click` `other_action`, `action_type:
+reset-filters`, kept so its existing reporting does not change); `kygo-picks` (/best-wearables is a
+buying guide, its clicks are `cta_click`); the tools hub has no category filter (the cards and the
+share button are its controls).
 
 ## How components opt into tracking
 

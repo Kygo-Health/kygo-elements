@@ -323,23 +323,37 @@
    *  own GA4 call:
    *    data-tool-control  what the control is, e.g. device-picker, metric-tab
    *    data-tool-value    what was chosen (else the element's value, else its label)
-   *    data-tool-action   optional verb; a toggle button with aria-pressed gets
-   *                       select / deselect automatically, a field gets change
+   *    data-tool-action   optional verb; otherwise read from the state before
+   *                       the click: aria-pressed gives select / deselect,
+   *                       aria-expanded (or the open state of the <details>
+   *                       a <summary> belongs to) gives expand / collapse, a tab
+   *                       (aria-selected) gives select; else click / change
    *    data-tool-name     optional; defaults to the component's tag */
-  function declaredTool(el, path, action) {
+  function toolAction(el, action) {
     var pressed = el.getAttribute('aria-pressed');
+    var expanded = el.getAttribute('aria-expanded');
+    var details = el.tagName === 'SUMMARY' && el.parentElement && el.parentElement.tagName === 'DETAILS' ? el.parentElement : null;
+    if (details && expanded == null) expanded = details.open ? 'true' : 'false';
+    return el.getAttribute('data-tool-action') ||
+           (pressed === 'true' ? 'deselect' : pressed === 'false' ? 'select' :
+            expanded === 'true' ? 'collapse' : expanded === 'false' ? 'expand' :
+            el.hasAttribute('aria-selected') ? 'select' : action);
+  }
+
+  function declaredTool(el, path, action, verb) {
     toolInteraction({
       tool: el.getAttribute('data-tool-name') || getComponentName(path),
       control: el.getAttribute('data-tool-control'),
       value: el.getAttribute('data-tool-value') ||
              (el.type === 'checkbox' ? String(!!el.checked) : (el.value != null && el.value !== '' ? el.value : getLabel(el))),
-      action: el.getAttribute('data-tool-action') ||
-              (pressed === 'true' ? 'deselect' : pressed === 'false' ? 'select' : action),
+      action: verb || toolAction(el, action),
       label: getLabel(el)
     });
   }
 
   /* ── Event Listeners ──────────────────────────────── */
+
+  var toolClicks = 0; // declared-control clicks so far (see the key handler)
 
   function onClick(e) {
     var path = e.composedPath();
@@ -347,7 +361,8 @@
     // Find the closest clickable element (button, a, [data-action])
     var clickable = findInPath(path, function (el) {
       var tag = el.tagName;
-      return tag === 'A' || tag === 'BUTTON' || el.hasAttribute('data-action');
+      return tag === 'A' || tag === 'BUTTON' || el.hasAttribute('data-action') ||
+             el.hasAttribute('data-tool-control');
     });
 
     if (!clickable) return;
@@ -355,10 +370,15 @@
     var component = getComponentName(path);
 
     // A declared tool control. Form fields report on change (below), not on
-    // the click that focuses them, and a middle click is not a use.
+    // the click that focuses them, and a middle click is not a use. A link or
+    // data-action element inside a control (a buy link in an accordion
+    // header) is that link's click, not a use of the control.
     if (e.type === 'click') {
       var ctl = findInPath(path, function (el) { return el.hasAttribute('data-tool-control'); });
-      if (ctl && !/^(INPUT|SELECT|TEXTAREA)$/.test(ctl.tagName)) {
+      var inner = ctl && clickable !== ctl && path.indexOf(clickable) < path.indexOf(ctl) &&
+                  (clickable.tagName === 'A' || clickable.hasAttribute('data-action'));
+      if (ctl && !inner && !/^(INPUT|SELECT|TEXTAREA)$/.test(ctl.tagName)) {
+        toolClicks++;
         declaredTool(ctl, path, 'click');
         return;
       }
@@ -421,13 +441,60 @@
     if (e.button === 1) onClick(e);
   }, true);
 
-  // Declared form-field controls (select, range, checkbox) report the value
-  // they were changed to. composedPath()[0] is the field inside its shadow root.
-  document.addEventListener('change', function (e) {
+  // Declared form fields report the value they were changed to. A change
+  // event is not composed, so inside a component's shadow root it never
+  // reaches the document; the input event is (composedPath()[0] is the field):
+  //   select, checkbox, radio  each input is one choice, sent at once
+  //   range                    sent once the slider has rested 700 ms
+  //   text, search, number     sent on the field's own change (Enter or
+  //                            leaving the field), never per keystroke: the
+  //                            first input puts a change listener on the field
+  //                            (focusin is no help: it stops at the shadow host
+  //                            when focus moves inside one component)
+  var rangeTimers = typeof WeakMap === 'function' ? new WeakMap() : null;
+  var boundFields = typeof WeakSet === 'function' ? new WeakSet() : null;
+  function declaredField(e) {
     var path = e.composedPath ? e.composedPath() : [e.target];
     var el = path[0];
-    if (el && el.nodeType === 1 && el.hasAttribute('data-tool-control')) declaredTool(el, path, 'change');
+    if (!el || el.nodeType !== 1 || !el.hasAttribute('data-tool-control')) return null;
+    return { el: el, path: path };
+  }
+  document.addEventListener('input', function (e) {
+    var f = declaredField(e);
+    if (!f) return;
+    var el = f.el, type = (el.type || '').toLowerCase();
+    if (el.tagName === 'SELECT' || type === 'checkbox' || type === 'radio') {
+      declaredTool(el, f.path, 'change');
+    } else if (type === 'range' && rangeTimers) {
+      clearTimeout(rangeTimers.get(el));
+      rangeTimers.set(el, setTimeout(function () { declaredTool(el, f.path, 'change'); }, 700));
+    } else if (boundFields && !boundFields.has(el)) {
+      boundFields.add(el);
+      el.addEventListener('change', function () { declaredTool(el, f.path, 'change'); });
+    }
   }, true);
+
+  // Enter / Space on a declared control that is not a native button, link or
+  // field (a div with role="button", an accordion header) fires no click, so
+  // the key press is the use. The state is read before the tool handles the
+  // key (capture), and the event is sent only if the tool did handle it
+  // (preventDefault, seen in the bubble phase), so a key the tool ignores
+  // counts nothing. Native buttons and links are left to their click, and a
+  // tool that answers the key with el.click() is counted by that click.
+  var pendingKey = null;
+  document.addEventListener('keydown', function (e) {
+    pendingKey = null;
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    var path = e.composedPath ? e.composedPath() : [e.target];
+    var el = findInPath(path, function (n) { return n.hasAttribute('data-tool-control'); });
+    if (!el || /^(A|BUTTON|INPUT|SELECT|TEXTAREA|SUMMARY)$/.test(el.tagName)) return;
+    pendingKey = { e: e, el: el, path: path, verb: toolAction(el, 'click'), clicks: toolClicks };
+  }, true);
+  document.addEventListener('keydown', function (e) {
+    var p = pendingKey;
+    pendingKey = null;
+    if (p && p.e === e && e.defaultPrevented && toolClicks === p.clicks) declaredTool(p.el, p.path, 'click', p.verb);
+  });
 
   // Track page visibility for engagement
   document.addEventListener('visibilitychange', function () {

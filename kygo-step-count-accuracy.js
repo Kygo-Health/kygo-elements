@@ -569,7 +569,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         <div class="picker" role="group" aria-label="Choose wearables to compare for step count accuracy">
           ${this._devices.map(d => {
             const on = this._selBrands.has(d.key);
-            return `<button type="button" class="pick-tile${on ? ' active' : ''}" data-brand-id="${d.key}" aria-pressed="${on}">
+            return `<button type="button" class="pick-tile${on ? ' active' : ''}" data-brand-id="${d.key}" aria-pressed="${on}" data-tool-control="brand-picker" data-tool-value="${d.key}">
               <span class="pick-check">${this._icon('check')}</span>
               ${this._deviceLogo(d, 'sm')}
               <span class="pick-name">${d.chip}</span>

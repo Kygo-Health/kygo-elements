@@ -1360,10 +1360,10 @@ class CaloriesInAnything extends HTMLElement {
           <p class="upload-text">Snap or upload your meal</p>
           <p class="upload-hint">Take a photo or drag and drop to get instant nutrition info</p>
           <div class="btn-row">
-            <button class="btn btn-primary" id="uploadBtn">
+            <button class="btn btn-primary" id="uploadBtn" data-tool-control="photo-upload" data-tool-value="upload">
               <span class="btn-icon">${Icons.upload}</span> Upload Photo
             </button>
-            <button class="btn btn-secondary" id="cameraBtn">
+            <button class="btn btn-secondary" id="cameraBtn" data-tool-control="photo-upload" data-tool-value="camera">
               <span class="btn-icon">${Icons.camera}</span> Take Photo
             </button>
           </div>
@@ -1394,7 +1394,7 @@ class CaloriesInAnything extends HTMLElement {
         <div class="error-icon">${Icons.alertTriangle}</div>
         <p class="error-text">${this.error}</p>
         <p class="error-hint">Let's try that again</p>
-        <button class="btn btn-primary" id="retryBtn">Try Again</button>
+        <button class="btn btn-primary" id="retryBtn" data-tool-control="scan-reset" data-tool-value="retry">Try Again</button>
       </div>
     `;
   }
@@ -1414,7 +1414,7 @@ class CaloriesInAnything extends HTMLElement {
 
     return `
       <div class="result-compact">
-        <button class="result-share-btn" id="shareBtn" title="Share result">${Icons.share}</button>
+        <button class="result-share-btn" id="shareBtn" data-tool-control="share" data-tool-value="scan-result" title="Share result">${Icons.share}</button>
 
         <div class="result-top-row">
           ${this.uploadedImageData ? `<img src="${this.uploadedImageData}" alt="${r.item}" class="result-img" />` : ''}
@@ -1502,7 +1502,7 @@ class CaloriesInAnything extends HTMLElement {
           <p class="result-verdict-text">${r.verdict}</p>
         </div>
 
-        <button class="btn result-action-btn" id="resetBtn">
+        <button class="btn result-action-btn" id="resetBtn" data-tool-control="scan-reset" data-tool-value="new-scan">
           <span class="btn-icon">${Icons.refresh}</span> Scan Another Food
         </button>
       </div>
@@ -1603,9 +1603,17 @@ class CaloriesInAnything extends HTMLElement {
       ['dragleave', 'drop'].forEach(evt => {
         dropZone.addEventListener(evt, (e) => { e.preventDefault(); dropZone.classList.remove('drag-over'); });
       });
+      // GA4 tool_interaction for the two upload paths that are not a declared
+      // button: a drop, and a click on the zone itself (not the file input's
+      // own click that the buttons trigger).
+      const trackUpload = (value) => {
+        const kt = window.KygoTrack;
+        if (kt && kt.toolInteraction) kt.toolInteraction({ tool: 'calories-in-anything', control: 'photo-upload', value, action: 'click' });
+      };
       dropZone.addEventListener('drop', (e) => {
         const file = e.dataTransfer.files[0];
         if (!file) return;
+        trackUpload('drop');
         const validation = this.validateFile(file);
         if (!validation.valid) { this.handleError(validation.error); return; }
         this.analyzing = true;
@@ -1614,6 +1622,7 @@ class CaloriesInAnything extends HTMLElement {
       });
       dropZone.addEventListener('click', (e) => {
         if (e.target.closest('.btn')) return;
+        if (e.target.tagName !== 'INPUT') trackUpload('zone');
         if (fileInput) fileInput.click();
       });
     }

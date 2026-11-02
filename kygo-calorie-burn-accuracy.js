@@ -535,13 +535,13 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
 
   _renderCalculator() {
     const devButtons = Object.values(this._devices).map(d => `
-      <button class="dev-btn${d.key === this._selectedDevice ? ' active' : ''}" data-device="${d.key}" role="tab" aria-selected="${d.key === this._selectedDevice}">
+      <button class="dev-btn${d.key === this._selectedDevice ? ' active' : ''}" data-device="${d.key}" data-tool-control="device-picker" data-tool-value="${d.key}" role="tab" aria-selected="${d.key === this._selectedDevice}">
         ${this._deviceLogo(d.key, d.name)}
         <span>${d.short}</span>
       </button>`).join('');
 
     const actButtons = Object.entries(this._activities).map(([k, a]) => `
-      <button class="act-btn${k === this._selectedActivity ? ' active' : ''}" data-activity="${k}" role="tab" aria-selected="${k === this._selectedActivity}">
+      <button class="act-btn${k === this._selectedActivity ? ' active' : ''}" data-activity="${k}" data-tool-control="activity-picker" data-tool-value="${k}" role="tab" aria-selected="${k === this._selectedActivity}">
         ${this._icon(a.icon)}<span>${a.name}</span>
       </button>`).join('');
 
@@ -1387,7 +1387,14 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
     root.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         const input = e.target.closest('[data-input="calories"]');
-        if (input) { e.preventDefault(); this._doCalculate(); }
+        if (input) {
+          e.preventDefault();
+          this._doCalculate();
+          // Enter in the field calculates without pressing the button, so it
+          // reports the same GA4 tool_interaction the button's click does.
+          const kt = window.KygoTrack;
+          if (kt && kt.toolInteraction) kt.toolInteraction({ tool: 'kygo-calorie-burn-accuracy', action: 'calculate', label: 'enter-key' });
+        }
       }
     });
   }

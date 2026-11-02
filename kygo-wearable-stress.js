@@ -1144,7 +1144,7 @@ class KygoWearableStress extends HTMLElement {
       const isOpen = expanded === key;
       return `
         <div class="dd-row ${isOpen ? 'open' : ''}" style="--accent:${d.color};--delay:${i * 30}ms">
-          <button class="dd-row-head" type="button" data-device-row="${key}" aria-expanded="${isOpen}">
+          <button class="dd-row-head" type="button" data-device-row="${key}" data-tool-control="device-dropdown" data-tool-value="${key}" aria-expanded="${isOpen}">
             ${img
               ? `<span class="dd-img"><img src="${img}" alt="${d.name}" loading="lazy" /></span>`
               : `<span class="dd-img dd-img--icon" aria-hidden="true">${this._icon('watch')}</span>`}
@@ -1258,7 +1258,7 @@ class KygoWearableStress extends HTMLElement {
 
     return `
       <article class="fact-card ${isExp ? 'expanded' : ''}" data-fact-key="${f._devKey}">
-        <button class="fact-head" aria-expanded="${isExp}">
+        <button class="fact-head" data-tool-control="factor-dropdown" data-tool-value="${f._devKey}" aria-expanded="${isExp}">
           <span class="fact-meta">
             <span class="fact-cat">${metricLbl} <span class="fact-dir ${dirCls}" aria-hidden="true">${dirArrow}</span></span>
             <span class="fact-name">${f.name}</span>
@@ -1309,7 +1309,7 @@ class KygoWearableStress extends HTMLElement {
       const count = (this._metricFactors[k] || []).length;
       const isActive = this._categoryFilter === k;
       return `
-        <button class="picker-tile ${isActive ? 'active' : ''}" data-cat="${k}" aria-pressed="${isActive}">
+        <button class="picker-tile ${isActive ? 'active' : ''}" data-cat="${k}" data-tool-control="category-picker" data-tool-value="${k}" aria-pressed="${isActive}">
           <span class="picker-tile-name">${m.label}</span>
           <span class="picker-tile-count">${count}</span>
         </button>`;
@@ -1326,7 +1326,7 @@ class KygoWearableStress extends HTMLElement {
       <div class="device-picker">
         <label class="device-picker-label" for="device-select">Your wearable</label>
         <div class="device-select-wrap">
-          <select class="device-select" id="device-select" data-device-select aria-label="Pick your wearable">${options}</select>
+          <select class="device-select" id="device-select" data-device-select data-tool-control="device-picker" aria-label="Pick your wearable">${options}</select>
           <span class="device-select-chev" aria-hidden="true">${this._icon('chevDown')}</span>
         </div>
       </div>`;

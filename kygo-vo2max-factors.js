@@ -432,11 +432,11 @@ class KygoVo2maxFactors extends HTMLElement {
   _renderFilterChips() {
     const dir = this._dirChips.map(c => {
       const active = this._dir.has(c.v);
-      return `<button class="filter-chip${active ? ' active' : ''}" data-filter="dir" data-value="${c.v}" aria-pressed="${active}">${c.l}</button>`;
+      return `<button class="filter-chip${active ? ' active' : ''}" data-filter="dir" data-value="${c.v}" data-tool-control="direction-filter" data-tool-value="${c.v}" aria-pressed="${active}">${c.l}</button>`;
     }).join('');
     const ev = this._evChips.map(([v, l]) => {
       const active = this._evidence.has(v);
-      return `<button class="filter-chip${active ? ' active' : ''}" data-filter="ev" data-value="${v}" aria-pressed="${active}">${l}</button>`;
+      return `<button class="filter-chip${active ? ' active' : ''}" data-filter="ev" data-value="${v}" data-tool-control="evidence-filter" data-tool-value="${v}" aria-pressed="${active}">${l}</button>`;
     }).join('');
     return `
       <div class="chip-group">
@@ -472,7 +472,7 @@ class KygoVo2maxFactors extends HTMLElement {
       const open = filtering || i === 0; // when filtering, open all matching groups; otherwise open the first
       return `
         <details class="fxcat" data-cat="${g.c.key}"${open ? ' open' : ''}>
-          <summary>
+          <summary data-tool-control="category-dropdown" data-tool-value="${g.c.key}">
             <span class="fxcat-ico">${this._icon(g.c.icon)}</span>
             <span class="fxcat-label">${g.c.label}</span>
             <span class="fxcat-count">${g.items.length}</span>
@@ -488,7 +488,7 @@ class KygoVo2maxFactors extends HTMLElement {
     const s = this._sourceById(f.src);
     return `
       <details class="fx-acc ${d.cls}" data-id="${f.id}">
-        <summary>
+        <summary data-tool-control="factor-dropdown" data-tool-value="${f.id}">
           <span class="fx-dir ${d.cls}">${this._icon(d.icon)}</span>
           <span class="fx-acc-id"><span class="fx-acc-name">${f.name}</span></span>
           <span class="dir-badge ${d.cls} fx-hide-sm">${f.dirLabel}</span>
@@ -514,7 +514,7 @@ class KygoVo2maxFactors extends HTMLElement {
     const levers = ['hiit-long', 'sit', 'body-fat', 'iron'].map(byId).filter(Boolean);
     const dontBother = ['nitrate', 'caffeine', 'creatine', 'beta-alanine', 'bicarbonate', 'vitamin-d'].map(byId).filter(Boolean);
     const item = (f, kind) => `
-      <button class="qa-item" data-jump="${f.id}">
+      <button class="qa-item" data-jump="${f.id}" data-tool-control="factor-jump" data-tool-value="${f.id}">
         <span class="qa-icon qa-${kind}">${this._icon(kind === 'lever' ? 'arrowUp' : 'minus')}</span>
         <span class="qa-text"><strong>${f.name}</strong><span class="qa-sub">${f.dirLabel} · ${f.srcLabel}</span></span>
         <span class="qa-arrow">${this._icon('arrowRight')}</span>
@@ -1022,7 +1022,7 @@ class KygoVo2maxFactors extends HTMLElement {
           <div class="explorer-controls animate-on-scroll">
             <div class="search-wrap">
               <span class="search-icon">${this._icon('search')}</span>
-              <input type="search" class="fx-search" placeholder="Search factors (e.g. HIIT, iron, sauna)…" aria-label="Search factors" />
+              <input type="search" class="fx-search" data-tool-control="search" placeholder="Search factors (e.g. HIIT, iron, sauna)…" aria-label="Search factors" />
             </div>
           </div>
 

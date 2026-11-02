@@ -828,11 +828,11 @@ class KygoFoodAndSleep extends HTMLElement {
   // columns become tabs so it is obvious there are four.
   _renderBoard() {
     const st = this._stages;
-    const tabs = st.map((s, i) => `<button type="button" class="bd-tab${i === 0 ? ' on' : ''}" role="tab" aria-selected="${i === 0}" data-bd-tab="${s.key}">${s.short}</button>`).join('');
+    const tabs = st.map((s, i) => `<button type="button" class="bd-tab${i === 0 ? ' on' : ''}" role="tab" aria-selected="${i === 0}" data-bd-tab="${s.key}" data-tool-control="stage-tab" data-tool-value="${s.key}">${s.short}</button>`).join('');
     const cols = st.map((s, i) => {
       const rows = this._sortedRows(s).filter(r => r.dir === 'good' || r.dir === 'bad');
       const items = rows.map(r => `
-        <li><button type="button" class="bd-row" data-jump="${s.key}:${r.key}" aria-label="${r.food}: ${r.stat}. Show the study">
+        <li><button type="button" class="bd-row" data-jump="${s.key}:${r.key}" data-tool-control="food-jump" data-tool-value="${s.key}-${r.key}" aria-label="${r.food}: ${r.stat}. Show the study">
           ${this._dirTile(r.dir)}
           <span class="bd-txt"><span class="bd-name">${r.b || r.food}</span><span class="bd-stat">${r.stat}</span></span>
         </button></li>`).join('');
@@ -859,7 +859,7 @@ class KygoFoodAndSleep extends HTMLElement {
       const links = r.src.map(k => `<a href="${src[k].url}" target="_blank" rel="noopener nofollow" data-action="source-link" data-track-label="${src[k].short}" data-track-position="${s.key}-finding">${src[k].short} ${this._icon('externalLink')}</a>`).join('');
       return `
         <details class="fd" id="${s.key}-${r.key}">
-          <summary class="fd-sum">
+          <summary class="fd-sum" data-tool-control="food-dropdown" data-tool-value="${s.key}-${r.key}">
             ${this._dirTile(r.dir)}
             <span class="fd-main">
               <span class="fd-name">${r.food}</span>

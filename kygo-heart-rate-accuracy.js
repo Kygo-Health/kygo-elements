@@ -692,7 +692,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
         <div class="picker" role="group" aria-label="Choose heart rate brands to compare">
           ${this._brands().map(b => {
             const on = this._selBrands.has(b.key);
-            return `<button type="button" class="pick-tile${on ? ' active' : ''}" data-brand-id="${b.key}" aria-pressed="${on}">
+            return `<button type="button" class="pick-tile${on ? ' active' : ''}" data-brand-id="${b.key}" aria-pressed="${on}" data-tool-control="brand-picker" data-tool-value="${b.key}">
               <span class="pick-check">${this._icon('check')}</span>
               ${this._deviceLogo(b.devices[0], 'sm')}
               <span class="pick-name">${b.name}</span>
@@ -763,8 +763,8 @@ class KygoHeartRateAccuracy extends HTMLElement {
     const toggle = `
       <div class="board-switch">
         <div class="board-toggle" role="group" aria-label="Switch between daytime and nighttime accuracy">
-          <button type="button" class="board-btn${this._board === 'day' ? ' active' : ''}" data-board="day" aria-pressed="${this._board === 'day'}">${this._icon('activity')} By day, moving</button>
-          <button type="button" class="board-btn${this._board === 'night' ? ' active' : ''}" data-board="night" aria-pressed="${this._board === 'night'}">${this._icon('moon')} At night, resting</button>
+          <button type="button" class="board-btn${this._board === 'day' ? ' active' : ''}" data-board="day" data-tool-control="view-toggle" data-tool-value="day" data-tool-action="select" aria-pressed="${this._board === 'day'}">${this._icon('activity')} By day, moving</button>
+          <button type="button" class="board-btn${this._board === 'night' ? ' active' : ''}" data-board="night" data-tool-control="view-toggle" data-tool-value="night" data-tool-action="select" aria-pressed="${this._board === 'night'}">${this._icon('moon')} At night, resting</button>
         </div>
         <span class="board-hint">${this._board === 'day' ? 'Mixed daytime movement vs a chest strap (Gielen 2026)' : 'Resting heart rate while asleep vs ECG (Dial 2025)'}</span>
       </div>`;

@@ -590,7 +590,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
     return `
       <div class="view-picker" role="tablist" aria-label="Data view">
         ${this._viewConfig.map(v => `
-          <button class="view-tab ${this._view === v.k ? 'active' : ''}" data-view="${v.k}" role="tab" aria-selected="${this._view === v.k}">
+          <button class="view-tab ${this._view === v.k ? 'active' : ''}" data-view="${v.k}" data-tool-control="view-tab" data-tool-value="${v.k}" role="tab" aria-selected="${this._view === v.k}">
             <span class="view-icon">${this._viewIcon(v.k)}</span>
             <span class="view-meta">
               <span class="view-lbl">${v.label}</span>
@@ -605,14 +605,14 @@ class KygoStayingAsleepFactors extends HTMLElement {
   _renderCatRail() {
     const flat = this._flatFactors();
     const chips = [`
-      <button class="cat-chip ${!this._catFilter ? 'active' : ''}" data-cat="" aria-pressed="${!this._catFilter}">
+      <button class="cat-chip ${!this._catFilter ? 'active' : ''}" data-cat="" data-tool-control="category-filter" data-tool-value="all" aria-pressed="${!this._catFilter}">
         All <span class="count">${flat.length}</span>
       </button>`];
     Object.entries(this._categoryMeta).forEach(([k, m]) => {
       const count = flat.filter(f => f.category === k).length;
       const active = this._catFilter === k;
       chips.push(`
-        <button class="cat-chip ${active ? 'active' : ''}" data-cat="${k}" aria-pressed="${active}">
+        <button class="cat-chip ${active ? 'active' : ''}" data-cat="${k}" data-tool-control="category-filter" data-tool-value="${k}" aria-pressed="${active}">
           <span class="cat-hue" aria-hidden="true">${this._catIcon(k)}</span>${m.label}
           <span class="count">${count}</span>
         </button>`);
@@ -642,7 +642,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
       const dim = selectedKey && !isSelected ? 'dim' : '';
       return `
         <div class="chart-row ${dim}">
-          <button class="chart-label" data-chart-key="${f.key}" aria-expanded="${isSelected}">
+          <button class="chart-label" data-chart-key="${f.key}" data-tool-control="chart-factor" data-tool-value="${f.key}" aria-expanded="${isSelected}">
             <span class="chart-label-name">${f.name}</span>
             <span class="chart-label-dot" aria-hidden="true">${this._catIcon(f.category)}</span>
           </button>
@@ -752,13 +752,13 @@ class KygoStayingAsleepFactors extends HTMLElement {
       { k: 'evidence',  l: 'Evidence' },
       { k: 'direction', l: 'Direction' },
       { k: 'category',  l: 'Category' }
-    ].map(o => `<button class="list-sort-btn ${this._listSort === o.k ? 'active' : ''}" data-sort="${o.k}">${o.l}</button>`).join('');
+    ].map(o => `<button class="list-sort-btn ${this._listSort === o.k ? 'active' : ''}" data-sort="${o.k}" data-tool-control="sort" data-tool-value="${o.k}">${o.l}</button>`).join('');
 
     const rows = shown.map((f, i) => {
       const waso = this._wasoDisplay(f);
       const isExp = this._listExpandedKey === f.key;
       return `
-        <div class="list-row ${isExp ? 'expanded' : ''}" data-list-key="${f.key}" role="button" tabindex="0" aria-expanded="${isExp}">
+        <div class="list-row ${isExp ? 'expanded' : ''}" data-list-key="${f.key}" data-tool-control="factor-dropdown" data-tool-value="${f.key}" role="button" tabindex="0" aria-expanded="${isExp}">
           <div class="list-rank">${String(i + 1).padStart(2, '0')}</div>
           <div class="list-name"><span class="list-dot" aria-hidden="true">${this._catIcon(f.category)}</span>${f.name}</div>
           <div class="list-col-dir"><span class="list-dir ${this._dirClass(f.direction)}">${dirLabel(f.direction)}</span></div>

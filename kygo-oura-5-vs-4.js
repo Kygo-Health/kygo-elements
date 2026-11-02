@@ -286,7 +286,7 @@ class KygoOura5vs4 extends HTMLElement {
 
   _renderMetricTabs() {
     return Object.entries(this._accuracyMetrics).map(([k, m]) =>
-      `<button data-metric="${k}" class="${k === this._activeMetric ? 'active' : ''}" role="tab" aria-selected="${k === this._activeMetric}">${m.name}</button>`
+      `<button data-metric="${k}" data-tool-control="metric-tab" data-tool-value="${k}" class="${k === this._activeMetric ? 'active' : ''}" role="tab" aria-selected="${k === this._activeMetric}">${m.name}</button>`
     ).join('');
   }
 
@@ -336,21 +336,21 @@ class KygoOura5vs4 extends HTMLElement {
         <div class="calc-block">
           <div class="label"><span>Ring 5 finish</span></div>
           <div class="seg" data-seg="tier">
-            <button data-tier="base" class="${this._tier === 'base' ? 'active' : ''}">Base <span class="px">$399 · Silver, Black</span></button>
-            <button data-tier="premium" class="${this._tier === 'premium' ? 'active' : ''}">Premium <span class="px">$499 · Gold, Stealth, Rose…</span></button>
+            <button data-tier="base" data-tool-control="tier-picker" data-tool-value="base" class="${this._tier === 'base' ? 'active' : ''}">Base <span class="px">$399 · Silver, Black</span></button>
+            <button data-tier="premium" data-tool-control="tier-picker" data-tool-value="premium" class="${this._tier === 'premium' ? 'active' : ''}">Premium <span class="px">$499 · Gold, Stealth, Rose…</span></button>
           </div>
         </div>
         <div class="calc-block">
           <div class="label"><span>Oura Membership billing</span></div>
           <div class="seg" data-seg="billing">
-            <button data-val="yearly" class="${this._billing === 'yearly' ? 'active' : ''}">Yearly <span class="px">$69.99/yr</span></button>
-            <button data-val="monthly" class="${this._billing === 'monthly' ? 'active' : ''}">Monthly <span class="px">$5.99/mo</span></button>
+            <button data-val="yearly" data-tool-control="billing-picker" data-tool-value="yearly" class="${this._billing === 'yearly' ? 'active' : ''}">Yearly <span class="px">$69.99/yr</span></button>
+            <button data-val="monthly" data-tool-control="billing-picker" data-tool-value="monthly" class="${this._billing === 'monthly' ? 'active' : ''}">Monthly <span class="px">$5.99/mo</span></button>
           </div>
         </div>
         <div class="calc-block">
           <div class="label"><span>Add-on</span></div>
           <label class="calc-check">
-            <input type="checkbox" data-toggle="case" ${this._includeCase ? 'checked' : ''} />
+            <input type="checkbox" data-toggle="case" data-tool-control="case-toggle" ${this._includeCase ? 'checked' : ''} />
             <span>Ring 5 charging case (+$99, optional)</span>
           </label>
         </div>

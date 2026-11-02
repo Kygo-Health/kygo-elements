@@ -94,6 +94,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
   }
 
   disconnectedCallback() {
+    clearTimeout(this._yearsTrackT);
     if (this._observer) this._observer.disconnect();
   }
 
@@ -909,7 +910,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
 
   _renderTabs() {
     return Object.keys(this._specs).map(c => `
-      <button data-tab="${c}" class="${c===this._activeTab?'active':''}">
+      <button data-tab="${c}" data-tool-control="spec-tab" data-tool-value="${String(c).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}" class="${c===this._activeTab?'active':''}">
         ${c}<span class="ct">${this._specs[c].length}</span>
       </button>
     `).join('');
@@ -987,16 +988,16 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
         <div class="calc-block">
           <div class="label"><img src="${whoopImg}" alt="" /><span>WHOOP membership tier</span></div>
           <div class="seg" data-seg="whoop">
-            <button data-val="one" class="${tier==='one'?'active':''}">One <span class="px">$199/yr</span></button>
-            <button data-val="peak" class="${tier==='peak'?'active':''}">Peak <span class="px">$239/yr</span></button>
-            <button data-val="life" class="${tier==='life'?'active':''}">Life · MG <span class="px">$359/yr</span></button>
+            <button data-val="one" data-tool-control="whoop-picker" data-tool-value="one" data-tool-action="select" class="${tier==='one'?'active':''}">One <span class="px">$199/yr</span></button>
+            <button data-val="peak" data-tool-control="whoop-picker" data-tool-value="peak" data-tool-action="select" class="${tier==='peak'?'active':''}">Peak <span class="px">$239/yr</span></button>
+            <button data-val="life" data-tool-control="whoop-picker" data-tool-value="life" data-tool-action="select" class="${tier==='life'?'active':''}">Life · MG <span class="px">$359/yr</span></button>
           </div>
         </div>
         <div class="calc-block">
           <div class="label"><img src="${fitbitImg}" alt="" /><span>Fitbit Air plan</span></div>
           <div class="seg" data-seg="air">
-            <button data-val="free" class="${plan==='free'?'active':''}">Free <span class="px">core tracking</span></button>
-            <button data-val="premium" class="${plan==='premium'?'active':''}">Premium <span class="px">$99/yr · AI Coach</span></button>
+            <button data-val="free" data-tool-control="air-picker" data-tool-value="free" data-tool-action="select" class="${plan==='free'?'active':''}">Free <span class="px">core tracking</span></button>
+            <button data-val="premium" data-tool-control="air-picker" data-tool-value="premium" data-tool-action="select" class="${plan==='premium'?'active':''}">Premium <span class="px">$99/yr · AI Coach</span></button>
           </div>
         </div>
         <div class="calc-block">
@@ -1063,6 +1064,13 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
       if (e.target.matches('[data-years]')) {
         this._years = +e.target.value;
         this._updateCalc();
+        // GA4 tool_interaction once the slider settles (the calc re-renders
+        // on every input, so the field never reaches a change event).
+        clearTimeout(this._yearsTrackT);
+        this._yearsTrackT = setTimeout(() => {
+          const kt = window.KygoTrack;
+          if (kt && kt.toolInteraction) kt.toolInteraction({ tool: 'kygo-fitbit-air-vs-whoop', control: 'years-slider', value: String(this._years), action: 'change' });
+        }, 700);
       }
     });
 
