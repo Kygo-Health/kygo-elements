@@ -156,10 +156,13 @@ transitively by the stylesheet.
 - **jsDelivr** — `https://cdn.jsdelivr.net/gh/Kygo-Health/kygo-elements@<branch>/<file>.js`
   (the CDN the components ship from; referenced in `test-stress.html` and the preview template).
 
-## 6. Analytics URL
+## 6. Analytics URLs
 
 - **Google Tag Manager / gtag.js** — `https://www.googletagmanager.com/gtag/js?id=<GA_ID>`,
   loaded only by `kygo-tracking.js`. Full analytics detail in `docs/schemas-and-tracking.md`.
+- **Reddit Pixel**: `https://www.redditstatic.com/ads/pixel.js` (pixel id `a2_ivf5p0ctl2fn`),
+  loaded only by `kygo-tracking.js`, top page only and only with Wix advertising consent. Detail in
+  `docs/schemas-and-tracking.md` ("Reddit Pixel").
 
 ---
 

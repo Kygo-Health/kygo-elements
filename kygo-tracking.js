@@ -16,6 +16,11 @@
  *   - gate_blog        (blog report card click, via postMessage from its Wix HTML iframe)
  *   - gate_companion   (the same card on the State of Wearable Accuracy companion post)
  *   - gate_tool        (report card on a tool page, data-gate attribute)
+ *
+ * Reddit Pixel (a2_ivf5p0ctl2fn), only with Wix advertising consent, top page only:
+ *   - PageVisit  (load, and each new pathname on Wix's SPA navigation)
+ *   - Lead       (cta_click of ios_download / android_download / web_signup)
+ *   - SignUp     (email_subscribe)
  */
 (function () {
   'use strict';
@@ -40,6 +45,123 @@
     window.gtag = function () { window.dataLayer.push(arguments); };
     window.gtag('js', new Date());
     window.gtag('config', GA_ID, { send_page_view: true });
+  }
+
+  /* ── Reddit Pixel (advertising, consent-gated) ────── */
+
+  // Reddit Ads pixel a2_ivf5p0ctl2fn. Advertising, so it loads and fires only
+  // while Wix's consent policy allows advertising (the cookie banner's "Accept
+  // all"). Top page only: never inside a frame. No PII and no advanced
+  // matching: init takes the id alone, and events carry a conversionId only.
+  // Shared state lives on window.__kygoRdt so a second copy of this script
+  // cannot init twice or fire a second PageVisit / Lead for the same event.
+  var RDT_ID = 'a2_ivf5p0ctl2fn';
+  var RDT_LEAD_CATEGORIES = { ios_download: 1, android_download: 1, web_signup: 1 };
+  var rdtState = window.__kygoRdt || (window.__kygoRdt = { started: false, loaded: false, path: null });
+
+  function rdtTopPage() {
+    try { return window.top === window; } catch (e) { return false; }
+  }
+
+  /** true when advertising consent is allowed now. Off Wix (no
+   *  consentPolicyManager and no Wix markup) the pixel is allowed. On a Wix
+   *  page whose consentPolicyManager is not there yet, it waits. */
+  function rdtConsent() {
+    try {
+      var cpm = window.consentPolicyManager;
+      if (cpm && typeof cpm.getCurrentConsentPolicy === 'function') {
+        var cur = cpm.getCurrentConsentPolicy();
+        return !!(cur && cur.policy && cur.policy.advertising === true);
+      }
+      return !rdtOnWix();
+    } catch (e) { return false; }
+  }
+
+  function rdtOnWix() {
+    try {
+      var gen = document.querySelector('meta[name="generator"]');
+      return !!((gen && /wix/i.test(gen.getAttribute('content') || '')) || window.viewerModel || window.wixBiSession);
+    } catch (e) { return false; }
+  }
+
+  function rdtCall() {
+    try {
+      if (!rdtState.loaded || !window.rdt || !rdtConsent()) return;
+      window.rdt.apply(window, arguments);
+    } catch (e) { /* analytics must never break the page */ }
+  }
+
+  function rdtConversionId() {
+    return 'k' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
+  }
+
+  /** Lead / SignUp, once per DOM event even if this script is on the page twice. */
+  function rdtConversion(name, evt) {
+    try {
+      if (evt) {
+        if (evt.__kygoRdt) return;
+        evt.__kygoRdt = true;
+      }
+      rdtCall('track', name, { conversionId: rdtConversionId() });
+    } catch (e) { /* never break clicks */ }
+  }
+
+  function rdtLoad() {
+    try {
+      if (rdtState.loaded || !rdtTopPage() || !rdtConsent()) return;
+      rdtState.loaded = true;
+      if (!window.rdt) {
+        // Reddit's standard base code (queue stub + async pixel.js).
+        var p = window.rdt = function () {
+          p.sendEvent ? p.sendEvent.apply(p, arguments) : p.callQueue.push(arguments);
+        };
+        p.callQueue = [];
+        var t = document.createElement('script');
+        t.src = 'https://www.redditstatic.com/ads/pixel.js';
+        t.async = true;
+        var s = document.getElementsByTagName('script')[0];
+        if (s && s.parentNode) s.parentNode.insertBefore(t, s);
+        else (document.head || document.documentElement).appendChild(t);
+      }
+      window.rdt('init', RDT_ID);
+      rdtState.path = window.location.pathname;
+      window.rdt('track', 'PageVisit');
+    } catch (e) { /* never break the page */ }
+  }
+
+  /** Wix navigates without reloads: one PageVisit per new pathname. */
+  function rdtPathCheck() {
+    try {
+      if (!rdtState.loaded) return;
+      var path = window.location.pathname;
+      if (path === rdtState.path) return;
+      rdtState.path = path;
+      rdtCall('track', 'PageVisit');
+    } catch (e) { /* ignore */ }
+  }
+
+  if (!rdtState.started && rdtTopPage()) {
+    rdtState.started = true;
+    rdtLoad();
+    // A later "Accept all" loads it then. Wix dispatches consentPolicyChanged
+    // on document; its detail is the new policy, but rdtConsent() re-reads
+    // getCurrentConsentPolicy() so the manager stays the one source of truth.
+    document.addEventListener('consentPolicyChanged', function () { rdtLoad(); });
+    // Backstop in case the event is missed or consentPolicyManager arrives late.
+    [2000, 5000, 10000, 15000].forEach(function (ms) { setTimeout(rdtLoad, ms); });
+    try {
+      ['pushState', 'replaceState'].forEach(function (m) {
+        var orig = history[m];
+        if (typeof orig !== 'function') return;
+        history[m] = function () {
+          var r = orig.apply(this, arguments);
+          setTimeout(rdtPathCheck, 0);
+          return r;
+        };
+      });
+    } catch (e) { /* history not writable: the poll below covers it */ }
+    window.addEventListener('popstate', function () { setTimeout(rdtPathCheck, 0); });
+    setInterval(rdtPathCheck, 1000);
   }
 
   /* ── Helpers ──────────────────────────────────────── */
@@ -427,6 +549,7 @@
       if (info.to_post) ctaParams.to_post = info.to_post;
       if (info.action_type) ctaParams.action_type = info.action_type;
       track('cta_click', ctaParams);
+      if (RDT_LEAD_CATEGORIES[info.category]) rdtConversion('Lead', e);
     }
   }
 
@@ -537,6 +660,7 @@
       if (detail.source) params.source = detail.source;
       if (domEvent === 'subscribe' && /^report-/.test(detail.source || '')) params.lead_type = 'report';
       track(cfg.ga, params);
+      if (domEvent === 'subscribe') rdtConversion('SignUp', e);
     }, true);
   });
 
@@ -617,6 +741,7 @@
       base.cta_category = EMBED_DEST[d.destination];
       base.cta_url = embedStr(d.url, 300);
       track('cta_click', base);
+      rdtConversion('Lead', e);
     } else if (d.type === 'view') {
       track('cta_view', base);
     } else if (d.type === 'subscribe') {
@@ -628,6 +753,7 @@
         component: 'kygo-report-card',
         page_path: window.location.pathname
       });
+      rdtConversion('SignUp', e);
     }
   });
 

@@ -175,7 +175,8 @@ Genuine notes to keep in mind:
 ## The only analytics: GA4 via `kygo-tracking.js`
 
 **Google Analytics 4 (gtag.js)**, loaded by the separate, optional script
-**`kygo-tracking.js`**, is the site-wide integration. No PostHog/Segment/Meta Pixel. Clicks and
+**`kygo-tracking.js`**, is the site-wide integration. No PostHog/Segment/Meta Pixel. The same
+script also loads the **Reddit Pixel** (advertising, consent-gated, since 2026-11-02; see "Reddit Pixel" below). Clicks and
 conversions are delegated to this one script, which listens globally. The exceptions that call
 `window.gtag` themselves (only when it exists): the HLTH Code banner on
 `kygo-oura-ring-comparison.js` (below), and the in-page `cta_view` of `<kygo-cta>` and
@@ -258,6 +259,43 @@ its `position` from the element's `surface`:
 | `blog_post_click` | `data-action="blog-post"` — the standard related-reading cards on every tool page. Also carries **`to_post`** (the destination slug from `data-post-slug`), with `position: 'related-posts'`. The mirror of `related_tool_click`: with `component` and `page_path` it gives **source tool → destination blog post**, so the blog cross-link section is measured the same way the tool cross-link section is |
 | `other_action` | any other element with a `data-action`. Carries **`action_type`** (the `data-action` value, e.g. `source-link`) and `cta_url` (its `href`) since 2026-11-01 |
 | `affiliate_banner` | **not** from `classifyClick()` — fired directly by `kygo-oura-ring-comparison.js` for the HLTH Code banner (see below) |
+
+## Reddit Pixel (`kygo-tracking.js`, 2026-11-02)
+
+Reddit Ads pixel **`a2_ivf5p0ctl2fn`**, loaded by `kygo-tracking.js` with Reddit's standard base
+code (the `rdt` queue stub plus async `https://www.redditstatic.com/ads/pixel.js`), then
+`rdt('init', 'a2_ivf5p0ctl2fn')` and `rdt('track', 'PageVisit')`. Nothing is rendered; no
+element is added to the page.
+
+| Reddit event | When | Payload |
+|---|---|---|
+| `PageVisit` | pixel load, and each later change of `location.pathname` (Wix SPA navigation) | none |
+| `Lead` | every GA4 `cta_click` whose `cta_category` is `ios_download`, `android_download` or `web_signup`: the in-page click path (left or middle click) and the blog-embed `{kygo:'embed', type:'click'}` message path. No other category | `{ conversionId }` |
+| `SignUp` | every GA4 `email_subscribe`: the `subscribe` CustomEvent and the embed `{kygo:'embed', type:'subscribe'}` message | `{ conversionId }` |
+
+- **`conversionId`** is a fresh random/timestamp string per conversion (`k<base36 time>-<random>`),
+  for Reddit's pixel/CAPI dedup. It is the only field sent.
+- **No PII, no advanced matching:** `init` takes the id alone; no email, name, phone or external
+  id is ever passed (the `subscribe` detail's email is never read).
+- **Consent gating (Wix cookie banner):** the pixel loads and every `rdt` call fires only while
+  `window.consentPolicyManager.getCurrentConsentPolicy().policy.advertising === true`
+  ("Accept all"; "Analytics only" and "Reject all" keep it off). Wix's default policy before a
+  choice currently reports `advertising: true`, and the script follows whatever the manager
+  returns. A later choice is picked up from Wix's `consentPolicyChanged` event (dispatched on
+  `document`, documented at dev.wix.com "About the Consent Policy"), which re-reads the manager,
+  plus re-checks at 2s / 5s / 10s / 15s after load. Consent withdrawn after load stops all further
+  `rdt` calls (the already-loaded script is not removed). With no `consentPolicyManager` on a
+  non-Wix page (a test harness) it loads; on a Wix page (generator meta / `viewerModel`) whose
+  manager is not there yet it waits for the re-checks instead of loading unconsented.
+- **Top page only:** never loads inside a frame (`window.top !== window`), so the blog HTML-embed
+  iframes report through their `postMessage` path instead.
+- **SPA:** `history.pushState` / `replaceState` are wrapped, `popstate` is listened to, and
+  `pathname` is polled every 1s as a backstop; a `PageVisit` fires only when the pathname differs
+  from the last one sent (query or hash changes do not count).
+- **Loaded twice:** state lives on `window.__kygoRdt`, so a second copy of the script cannot
+  inject `pixel.js` again, init twice or send a second `PageVisit`; conversions are de-duplicated
+  per DOM event, so the second copy's click / message / subscribe listeners add nothing.
+- Every `rdt` call is wrapped in `try/catch`: the pixel can never break a click.
 
 ## Blog HTML-embed cards (`docs/wix-snippets/blog-cta-card.html`)
 
@@ -508,5 +546,6 @@ postMessage/structured clone, which can't serialize functions).
    plumbing already covered by the click listener or not conversion-relevant.
 3. **`page_view` is the only built-in pageview** — SPA-style route changes on Wix won't refire it;
    each component page is a full load so this is generally fine.
-4. No consent/CMP gating is present in `kygo-tracking.js`; GA loads immediately when `data-ga-id`
-   is set. Confirm this matches the site's privacy/cookie policy.
+4. No consent/CMP gating is present for GA4 in `kygo-tracking.js`; GA loads immediately when
+   `data-ga-id` is set. Confirm this matches the site's privacy/cookie policy. (The Reddit Pixel
+   *is* gated on Wix advertising consent, since 2026-11-02.)
