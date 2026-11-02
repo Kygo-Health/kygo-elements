@@ -680,6 +680,13 @@
           .btn.secondary { color: #fff; border: 1px solid rgba(255,255,255,.22); font-weight: 600; }
           .btn.secondary:hover { border-color: #22C55E; }
           .btns.solo .btn { flex: 1; }
+          /* Two buttons (iPhone + Android) need about 330px side by side, more
+             than a phone-width card has inside its padding, and the card clips
+             (overflow: hidden). Let the row wrap, and on narrow screens stack
+             both buttons full width so neither is ever cut off. */
+          .btns { flex-wrap: wrap; }
+          .btn { max-width: 100%; }
+          @media (max-width: 419px) { .btns .btn { flex: 1 1 100%; } }
           .review { display: none; }
           .web { margin-top: 10px; font-size: 13px; color: rgba(255,255,255,.6); }
           .web a { color: #fff; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
