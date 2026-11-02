@@ -2,6 +2,16 @@
 
 Guidance for working in this repo. Read this before editing or creating components.
 
+## Tracking source of truth
+
+**"Kygo Tracking & Attribution"** (Claude Doc, https://claude.ai/artifact/NeqbvJ7NeEG1fxTXVMoQrh)
+is the single place that records how Kygo tracks visitors, installs, signups, trials and revenue
+(this repo, Wix, Tenjin, GA4, RevenueCat, Mixpanel): the website tracking map and coverage table,
+the Tenjin campaign ids, the Reddit measurement method, open gaps and a dated change log. Read it
+before changing any link, tag, campaign, event or data pull, and after a change add a row to its
+change log (newest first) and update the section it touches. It wins over older notes elsewhere;
+the repo docs below say how the code does it.
+
 ## Reference docs (read when relevant)
 
 - **`docs/about-kygo.md`** — what the Kygo app actually does (features, wearables, data sources,
