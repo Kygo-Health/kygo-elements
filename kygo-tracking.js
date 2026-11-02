@@ -71,7 +71,7 @@
       var cpm = window.consentPolicyManager;
       if (cpm && typeof cpm.getCurrentConsentPolicy === 'function') {
         var cur = cpm.getCurrentConsentPolicy();
-        return !!(cur && cur.policy && cur.policy.advertising === true);
+        return !!(cur && cur.policy && cur.policy.advertising === true && cur.policy.dataToThirdParty !== false);
       }
       return !rdtOnWix();
     } catch (e) { return false; }
