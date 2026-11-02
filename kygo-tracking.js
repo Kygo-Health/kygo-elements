@@ -99,9 +99,23 @@
         if (v && v[0] === 'v1') c = { advertising: v[2] === 'd1' };
       }
       if (c) return c.advertising === true;
-      if (window.KygoConsent || document.getElementById('kygo-consent')) return false;
+      // No choice yet: outside Europe the pixel runs until the visitor says
+      // no (opt-out, like analytics); in Europe / UK / Switzerland it waits
+      // for "Accept all". Decided 2026-11-02 to keep ad data while testing;
+      // revisit (and update the banner wording) before scaling spend.
+      if (window.KygoConsent || document.getElementById('kygo-consent')) return !rdtOptInRegion();
       return undefined;
     } catch (e) { return false; }
+  }
+
+  /** Europe (EU/EEA, UK, Switzerland), by browser time zone, the same test the
+   *  Kygo Consent Banner uses for analytics. Unknown time zone = opt-in. */
+  function rdtOptInRegion() {
+    try {
+      var tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+      if (!tz) return true;
+      return tz.indexOf('Europe/') === 0 || ['Atlantic/Canary', 'Atlantic/Madeira', 'Atlantic/Azores', 'Atlantic/Reykjavik', 'Atlantic/Faroe', 'Asia/Nicosia', 'Asia/Famagusta', 'Arctic/Longyearbyen'].indexOf(tz) > -1;
+    } catch (e) { return true; }
   }
 
   // A visitor who presses "Accept all" later gets the pixel then: the banner
