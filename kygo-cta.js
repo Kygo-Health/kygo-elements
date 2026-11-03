@@ -213,6 +213,14 @@ const __kygoAttr = window.KygoAttribution || (function () {
       ios: 'https://track.tenjin.com/v0/click/e2yydW7Anla3ERtPOFVy1v',
       android: 'https://track.tenjin.com/v0/click/fqbmS0etZXkjp75PnUeczn',
     },
+    // Ryan's pinned Reddit profile index post (utm_medium=profile): its tool
+    // links carry utm_*, so they would miss the Reddit Organic swap and fall to
+    // the Website links. Same Reddit Organic Tenjin links; creative_name =
+    // utm_content, else index-post.
+    'index-post': {
+      ios: 'https://track.tenjin.com/v0/click/TEmyDcRQIVRM8VUAxfh4',
+      android: 'https://track.tenjin.com/v0/click/heO9OuoP6tG8lENadDof4n',
+    },
   };
 
   /** Reddit Organic channel links (Tenjin "Reddit Post Link - iOS" / "- Android").
