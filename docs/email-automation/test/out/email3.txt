@@ -1,0 +1,23 @@
+Hi,
+
+If you're shopping for a wearable, the hard part is knowing which one measures the thing you care about. The most popular device isn't always the most accurate one for your goal.
+
+The report's buyer's guide scores each brand by goal:
+
+Sleep: Oura, 1st on sleep stages and sleep timing.
+Recovery: Oura again, 1st on HRV and resting heart rate, with WHOOP next.
+Training: Garmin, 1st on steps and VO2 max. One catch: its 6.7% VO2 max error was a Forerunner 245 with a chest strap. Wrist only, a Vivoactive 4S was 56% off (median, 207 mostly older women).
+Health checks: Apple Watch for blood oxygen, Fitbit / Google for breathing rate.
+Calorie tracking: Fitbit / Google, though no brand came within 9% on the max treadmill test.
+
+The guide doesn't weigh price, comfort, battery life or subscriptions, so add those yourself.
+
+Find the best wearable for your goal:
+https://www.kygo.app/_functions/go?id=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&e=3&l=e3
+
+Ryan
+
+________
+
+Kygo Health LLC, Jersey City NJ
+Unsubscribe: https://script.google.com/macros/s/TESTDEPLOY/exec?a=u&id=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa

@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Shared blog cards test</title>
+<style>body{margin:0;background:#fff;font-family:sans-serif}.col{max-width:680px;margin:20px auto;padding:0 16px}iframe{width:100%;border:0;height:300px;display:block;background:#fafafa}p{margin:0;color:#475569}</style>
+</head><body><div class="col">
+<p>Text above the report card.</p>
+<iframe id="r" srcdoc='<style>html,body{margin:0;background:transparent}</style><kygo-report-card slug="how-accurate-is-your-heart-rate-monitor"><a href="https://www.kygo.app/state-of-wearable-accuracy" target="_top">Get the free report</a></kygo-report-card><script src="kygo-report-card.js?v=1"></script>'></iframe>
+<p>Text above the app card.</p>
+<iframe id="a" srcdoc='<style>html,body{margin:0;background:transparent}</style><kygo-app-card post="how-accurate-is-your-heart-rate-monitor" position="mid" slug="hr-monitor-mid" variant="v1" headline="Separate real patterns from noise." sub="Kygo matches your heart rate, HRV and sleep to what you actually ate."><a href="https://www.kygo.app" target="_top">Get the Kygo app</a></kygo-app-card><script src="kygo-cta.js?v=1"></script><script src="kygo-app-card.js?v=1"></script>'></iframe>
+<p>Text above the picks card.</p>
+<iframe id="p" srcdoc='<style>html,body{margin:0;background:transparent}</style><kygo-picks-card focus="training" slug="how-accurate-is-your-heart-rate-monitor"><a href="https://www.kygo.app/best-wearables" target="_top">See the most accurate wearables</a></kygo-picks-card><script src="kygo-picks-card.js?v=1"></script>'></iframe>
+<p>Text below.</p></div>
+<script>
+window.__msgs=[];
+addEventListener('message',e=>{const d=e.data;if(!d||typeof d!=='object')return;window.__msgs.push(d);
+ if(d.kygo==='embed'&&d.type==='height'){for(const f of document.querySelectorAll('iframe')) if(f.contentWindow===e.source) f.style.height=d.height+'px';}});
+</script></body></html>

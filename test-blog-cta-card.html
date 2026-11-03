@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blog HTML-embed CTA card preview</title>
+  <style>
+    body { font-family: 'DM Sans', sans-serif; margin: 0; background: #fff; color: #1E293B; }
+    .wrap { max-width: 740px; margin: 0 auto; padding: 32px 20px; }
+    p { margin: 0 0 16px; }
+    iframe { display: block; width: 100%; height: 420px; border: 0; margin: 24px 0; }
+  </style>
+  <!-- No data-ga-id: kygo-tracking.js logs each GA4 event to the console instead. -->
+  <script src="kygo-tracking.js"></script>
+</head>
+<body>
+  <div class="wrap">
+    <p>Article text above the first card. Open with ?utm_source=test&amp;fbclid=abc to check the
+       web link keeps the visitor's own campaign.</p>
+    <!-- Sandboxed with an opaque origin, like the Wix Blog HTML block, so the
+         page cannot reach into the card and has to rely on postMessage. -->
+    <iframe id="card1" sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox"></iframe>
+    <p style="height:900px">More article text, then a second card further down.</p>
+    <iframe id="card2" sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox"></iframe>
+  </div>
+  <script>
+    // Loads the snippet as pasted, pointing its kygo-cta.js at this checkout.
+    var local = new URL('kygo-cta.js?v=' + Date.now(), location.href).href;
+    fetch('docs/wix-snippets/blog-cta-card.html').then(function (r) { return r.text(); }).then(function (html) {
+      html = html.replace('https://kygo-health.github.io/kygo-elements/kygo-cta.js', local);
+      document.getElementById('card1').srcdoc = html;
+      document.getElementById('card2').srcdoc = html
+        .replace('slug="example-post-mid"', 'slug="example-post-end"')
+        .replace('theme="dark"', 'theme="dark" note=""');
+    });
+  </script>
+</body>
+</html>

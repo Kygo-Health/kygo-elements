@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Email 2, the medal table</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#15803d}a:hover{color:#0f172a}
+</style>
+</helmet>
+<div style="width: 600px; height: 1770px; box-sizing: border-box; padding: 28px 24px; background: #f8fafc; display: flex; flex-direction: column; gap: 18px; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif; color: #475569">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: #475569">Subject</span>
+<p style="margin: 0; font-size: 18px; line-height: 1.35; font-weight: 600; color: #0f172a">No wearable won more than 4 of the 10 golds</p>
+<p style="margin: 0; font-size: 14px; line-height: 1.5; color: #475569">The full podium, metric by metric, in one email.</p>
+</div>
+<div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 18px; box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06); overflow: hidden">
+<div style="padding: 18px 28px; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: space-between; gap: 12px">
+<span style="font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 700; letter-spacing: -0.02em; color: #0f172a">Kygo</span>
+<span style="font-size: 13px; color: #475569">From Ryan at Kygo</span>
+</div>
+<div style="padding: 28px; display: flex; flex-direction: column; gap: 18px; font-size: 16px; line-height: 1.65; color: #475569">
+<p style="margin: 0">Hi,</p>
+<p style="margin: 0">Most people buy a wearable for one reason, then trust it for everything. The rankings show why that doesn't hold up. Here's the podium for the ten ranked metrics:</p>
+<a href="https://www.kygo.app/tools/wearable-accuracy?utm_source=email&amp;utm_medium=nurture&amp;utm_campaign=sowa-2026&amp;utm_content=email-2-image" style="display: block"><img src="/_blob/a9a3d35334c06ccd1978193073d0366d" data-email-src="https://static.wixstatic.com/media/273a63_cd7028c3c28249178f28a7096850e64e~mv2.png" alt="Medal table: podium places by metric and brand" style="display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; border-radius: 12px; border: 1px solid #e2e8f0"></a>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<p style="margin: 0"><strong style="color: #0f172a">Sleep stages:</strong> Oura, Apple Watch, Fitbit / Google</p>
+<p style="margin: 0"><strong style="color: #0f172a">Sleep timing:</strong> Oura, Fitbit / Google, Apple Watch</p>
+<p style="margin: 0"><strong style="color: #0f172a">HRV:</strong> Oura, WHOOP, Garmin</p>
+<p style="margin: 0"><strong style="color: #0f172a">Resting heart rate:</strong> Oura, Polar, WHOOP</p>
+<p style="margin: 0"><strong style="color: #0f172a">Exercise heart rate:</strong> Apple Watch, Garmin, Fitbit / Google</p>
+<p style="margin: 0"><strong style="color: #0f172a">Blood oxygen:</strong> Apple Watch, Samsung, Garmin</p>
+<p style="margin: 0"><strong style="color: #0f172a">Steps:</strong> Garmin, Apple Watch, Samsung</p>
+<p style="margin: 0"><strong style="color: #0f172a">Calories:</strong> Fitbit / Google, Samsung, Apple Watch (no brand came within 9% on the max treadmill test)</p>
+<p style="margin: 0"><strong style="color: #0f172a">VO2 max:</strong> Garmin, Fitbit / Google, Apple Watch</p>
+<p style="margin: 0"><strong style="color: #0f172a">Breathing rate:</strong> Fitbit / Google, WHOOP, no qualifying third</p>
+</div>
+<p style="margin: 0">Skin temperature isn't ranked, because no brand's sensor has an independent test against a thermometer.</p>
+<p style="margin: 0">Oura takes all four overnight golds and places on nothing else. Apple places on seven metrics, more than any brand, without a sleep gold.</p>
+<p style="margin: 0">No brand wins every metric. Kygo connects them all and uses the most accurate source for each.</p>
+<a href="https://www.kygo.app/tools/wearable-accuracy?utm_source=email&amp;utm_medium=nurture&amp;utm_campaign=sowa-2026&amp;utm_content=email-2" style="align-self: flex-start; display: inline-flex; align-items: center; min-height: 48px; padding: 0 22px; border-radius: 10px; background: {{accent}}; color: #0f172a; font-size: 15px; font-weight: 600; line-height: 1.3; text-decoration: none">See the figures behind every placing</a>
+<p style="margin: 0">Ryan</p>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 12px; line-height: 1.5; color: #475569; text-align: center">
+<span>Kygo Health LLC, Jersey City NJ</span>
+<a href="https://www.kygo.app/unsubscribe" style="color: #15803d; text-decoration: underline">Unsubscribe</a>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#22c55e","options":["#22c55e","#16a34a"]},"$preview":{"width":600,"height":1770}}'>
+class Component extends DCLogic {
+renderVals() {
+return { accent: this.props.accent ?? '#22c55e' };
+}
+}
+</script>
+</body>
+</html>

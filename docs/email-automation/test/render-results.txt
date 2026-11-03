@@ -1,0 +1,10 @@
+email1.png  600x1062 css px, images ok, no horizontal overflow
+email2.png  600x1316 css px, images ok, no horizontal overflow
+email3.png  600x1154 css px, images ok, no horizontal overflow
+email4.png  600x1206 css px, images ok, no horizontal overflow
+email5.png  600x1310 css px, images ok, no horizontal overflow
+email1-mobile.png  375x1189 css px, images ok, no horizontal overflow
+email2-mobile.png  375x1527 css px, images ok, no horizontal overflow
+email3-mobile.png  375x1261 css px, images ok, no horizontal overflow
+email4-mobile.png  375x1414 css px, images ok, no horizontal overflow
+email5-mobile.png  375x1518 css px, images ok, no horizontal overflow

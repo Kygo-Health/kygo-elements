@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Email 4, an accurate number still can't tell you why</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#15803d}a:hover{color:#0f172a}
+</style>
+</helmet>
+<div style="width: 600px; height: 1700px; box-sizing: border-box; padding: 28px 24px; background: #f8fafc; display: flex; flex-direction: column; gap: 18px; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif; color: #475569">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: #475569">Subject</span>
+<p style="margin: 0; font-size: 18px; line-height: 1.35; font-weight: 600; color: #0f172a">Your HRV dropped. Was it the coffee?</p>
+<p style="margin: 0; font-size: 14px; line-height: 1.5; color: #475569">Even the most accurate ring can't tell you why a number moved.</p>
+</div>
+<div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 18px; box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06); overflow: hidden">
+<div style="padding: 18px 28px; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: space-between; gap: 12px">
+<span style="font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 700; letter-spacing: -0.02em; color: #0f172a">Kygo</span>
+<span style="font-size: 13px; color: #475569">From Ryan at Kygo</span>
+</div>
+<div style="padding: 28px; display: flex; flex-direction: column; gap: 18px; font-size: 16px; line-height: 1.65; color: #475569">
+<p style="margin: 0">Hi,</p>
+<p style="margin: 0">Say your HRV drops three nights in a row. Even on the most accurate HRV tracker in the report, Oura Ring 4 at 5.96% off a chest-strap ECG (Dial 2025, independent, 13 adults over 139 nights), the number only tells you it dropped. It can't tell you whether it was the afternoon coffee, the second glass of wine, or the short night before.</p>
+<a href="https://app.kygo.app?utm_source=email&amp;utm_medium=nurture&amp;utm_campaign=sowa-2026&amp;utm_content=email-4-image" style="align-self: center; display: block"><img src="/_blob/3ab4d48632cadca959801aac94e179e8" data-email-src="https://static.wixstatic.com/media/273a63_41a3d623479d413291e8aa7a44d6cdc5~mv2.png" alt="Kygo app showing late caffeine as the biggest drag on HRV" style="display: block; width: 280px; height: auto; aspect-ratio: 680 / 970"></a>
+<p style="margin: 0">That's where most people get stuck. You suspect something in your diet is affecting how you feel, but you can't figure out what.</p>
+<p style="margin: 0">The report makes one point that helps here. A device that's a little off still shows you what changed, because you compare the same sensor with itself, night after night. Trends work even when single readings don't.</p>
+<p style="margin: 0">Kygo lines up what you eat with your sleep, HRV and resting heart rate, and shows which foods and habits move your numbers. Food logging is free.</p>
+<a href="https://app.kygo.app?utm_source=email&amp;utm_medium=nurture&amp;utm_campaign=sowa-2026&amp;utm_content=email-4" style="align-self: flex-start; display: inline-flex; align-items: center; min-height: 48px; padding: 0 22px; border-radius: 10px; background: {{accent}}; color: #0f172a; font-size: 15px; font-weight: 600; line-height: 1.3; text-decoration: none">Start logging on the web</a>
+<p style="margin: 0">Ryan</p>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 12px; line-height: 1.5; color: #475569; text-align: center">
+<span>Kygo Health LLC, Jersey City NJ</span>
+<a href="https://www.kygo.app/unsubscribe" style="color: #15803d; text-decoration: underline">Unsubscribe</a>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#22c55e","options":["#22c55e","#16a34a"]},"$preview":{"width":600,"height":1700}}'>
+class Component extends DCLogic {
+renderVals() {
+return { accent: this.props.accent ?? '#22c55e' };
+}
+}
+</script>
+</body>
+</html>

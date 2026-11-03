@@ -1,0 +1,18 @@
+<!--
+  Shared blog app card (kygo-app-card.js) for the Wix Blog "Add > HTML code" block.
+  The design lives in kygo-app-card.js on GitHub Pages; this block only carries the
+  post's own words and labels. Edit per placement:
+    post      the post's URL slug (Tenjin site_id)
+    position  mid | end
+    slug      unique per placement, max 30 chars (GA4 cta_label)
+    variant   design/copy variant id (GA4 cta_content, Tenjin creative_name)
+    focus     example finding on the right: hrv (more to come)
+    headline / sub  the post's own hook, never reused
+  The <a> inside only shows if the script fails to load.
+-->
+<style>html,body{margin:0;background:transparent}</style>
+<kygo-app-card post="POST-SLUG" position="mid" slug="SHORT-mid" focus="hrv" variant="v1"
+  headline="HEADLINE" sub="SUB">
+  <a href="https://www.kygo.app" target="_top">Get the Kygo app</a>
+</kygo-app-card>
+<script src="https://kygo-health.github.io/kygo-elements/kygo-app-card.js"></script>

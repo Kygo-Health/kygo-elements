@@ -1,0 +1,5 @@
+{
+  "_comment": "One hook per blog post, keyed by post slug. A hook is the topic-matched line on the reader's payoff that <kygo-cta> shows above the buttons. No two posts may share one: migrate-blog-ctas.js treats a duplicate as an error. Fill this in for the 48 existing posts before running the migration with --apply.",
+  "why-i-built-kygo-health-app": "You now know why Kygo exists. Find out what it says about your own nights.",
+  "what-is-kygo-health-app-features-pricing": "You have the feature list. The part that matters is what it finds in your data."
+}

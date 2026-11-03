@@ -1,0 +1,53 @@
+name: Build SEO markup
+
+# Regenerates seo/<tag>.html — the crawler-readable markup each Wix page serves through its custom
+# element's seoMarkup (see docs/seo-markup-poc.md) — whenever a component changes, and commits the
+# result back to main so GitHub Pages serves it. The markup is rendered from the components
+# themselves, so it always matches what visitors see; never edit seo/*.html by hand.
+#
+# seo/** is not in the trigger paths, so the bot's own commit doesn't re-trigger this workflow.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'kygo-*.js'
+      - 'calories-custom-element.js'
+      - 'scripts/build-seo-markup.js'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-seo-markup
+  cancel-in-progress: false
+
+jobs:
+  build:
+    # Pinned: ubuntu-latest moved to Ubuntu 26 (Oct 2026), where `playwright install --with-deps`
+    # (1.56.1) exits 1 in seconds. Move off 24.04 only together with a Playwright bump.
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install Playwright + Chromium
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Build seo/*.html
+        run: node scripts/build-seo-markup.js
+      - name: Commit changes
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898699+github-actions[bot]@users.noreply.github.com'
+          git add seo velo
+          if git diff --cached --quiet; then
+            echo "SEO markup unchanged."
+          else
+            git commit -m "Regenerate SEO markup"
+            git pull --rebase origin main
+            git push
+          fi

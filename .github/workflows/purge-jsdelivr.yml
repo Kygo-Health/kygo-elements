@@ -1,0 +1,28 @@
+name: Purge jsDelivr cache
+
+# Keeps the @main jsDelivr URLs fresh so Wix embeds can point at a stable
+# URL (e.g. https://cdn.jsdelivr.net/gh/Kygo-Health/kygo-elements@main/kygo-bundle.js)
+# instead of a per-push commit hash. Runs on every push to main and tells
+# jsDelivr to re-fetch each served file. Updates then appear within minutes.
+#
+# NOTE: change `main` below (and in your Wix URLs) if your production branch differs.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}   # allows a manual run from the Actions tab
+
+jobs:
+  purge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Purge jsDelivr for every served .js file
+        run: |
+          set -u
+          for f in $(git ls-files '*.js'); do
+            url="https://purge.jsdelivr.net/gh/Kygo-Health/kygo-elements@main/$f"
+            echo "Purging $f"
+            curl -fsS "$url" -o /dev/null || echo "  ⚠️ purge request failed for $f (continuing)"
+          done
+          echo "Done."
