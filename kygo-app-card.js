@@ -718,6 +718,13 @@
           .chip img { width: 100%; height: 100%; object-fit: cover; display: block; }
           .chip em { font-style: normal; font-size: 9px; font-weight: 600; color: rgba(255,255,255,.6); white-space: nowrap; }
           @media (max-width: 379px) { .badges { gap: 3px; } .chip em { font-size: 7.5px; } }
+          /* Phones: content centred on the card. */
+          @media (max-width: 599px) {
+            .card { text-align: center; }
+            .btns { justify-content: center; }
+            .badges { margin: 0 auto; }
+            .phone { text-align: left; }
+          }
 
           .phone { position: relative; width: 236px; height: 400px; margin: 20px auto -210px; padding: 7px; border-radius: 40px;
             background: linear-gradient(160deg, #334155, #0B1220); box-shadow: 0 0 0 1px rgba(255,255,255,.10), 0 40px 70px -24px rgba(0,0,0,.75); }
