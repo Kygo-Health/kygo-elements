@@ -1437,7 +1437,7 @@ class KygoSleepLatencyFactors extends HTMLElement {
       </style>
       <section class="kc-section${bg === 'gray' ? ' kc-gray' : ''}" id="get-the-app">
         <div class="kc-inner">
-          <kygo-app-card surface="tool" web post="tool-${c.slug}" position="mid" slug="${c.slug}" variant="v1" focus="latency"
+          <kygo-app-card surface="tool" note="Free plan on web or in the app · Save 58% on yearly · Cancel anytime" web post="tool-${c.slug}" position="mid" slug="${c.slug}" variant="v1" focus="latency"
             headline="${txt(c.headline)}" sub="${txt(c.sub)}">
             <a href="https://app.kygo.app/start">Get the Kygo app</a>
           </kygo-app-card>

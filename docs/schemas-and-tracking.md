@@ -342,7 +342,9 @@ Accuracy report card (accuracy and comparison tools only), the Picks card (devic
 the FAQ). The inline email band was removed from all tool pages.
 
 - **App card**: the shared `<kygo-app-card surface="tool" web post="tool-<slug>" slug="<slug>">`
-  in the page itself (not an iframe). `kygo-tracking.js` treats it like `<kygo-cta>`:
+  in the page itself (not an iframe). Since 2026-11-06 every card (blog too) has a Web button
+  (`data-destination="web"`, `utm_medium=<surface>`, `utm_campaign=<slug>`), so blog cards can
+  file `web_signup` as well; the `web` attribute is no longer read. `kygo-tracking.js` treats it like `<kygo-cta>`:
   `cta_click` with `cta_category` ios_download / android_download / web_signup,
   `cta_label` = slug, `position` = tool, `cta_content` = variant (v1). Tenjin: `site_id=tool-<slug>`,
   `creative_name=app-card-v1-mid` (in a paid session: the session's `utm_content`, else its
