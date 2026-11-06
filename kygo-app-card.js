@@ -379,8 +379,9 @@
      *  (loaded first, read here as TENJIN_IOS / TENJIN_ANDROID); this adds the
      *  post as site_id and variant-position as creative_name, so installs read
      *  per post and per design in Tenjin. All three platforms stay on screen,
-     *  as on the old dark card: the visitor's own store filled (iPhone on
-     *  desktop), the other store and Web as outline buttons. */
+     *  the same order as <kygo-cta>: the visitor's own device filled (a phone
+     *  its store, "Start your free trial"; desktop Web, "Start on the web"),
+     *  the other two as outline buttons. */
     _wireStoreLinks() {
       const box = this.shadowRoot.querySelector('.btns');
       if (!box || typeof TENJIN_IOS === 'undefined' || typeof TENJIN_ANDROID === 'undefined') return;
@@ -388,9 +389,11 @@
         '&creative_name=' + encodeURIComponent('app-card-' + this._variant + '-' + this._position);
       const ios = (cls) => `<a class="btn ${cls}" href="${esc(TENJIN_IOS + q)}" data-destination="ios" target="_blank" rel="noopener" aria-label="Start your free trial on the App Store">${APPLE}<span>${cls === 'primary' ? 'Start your free trial' : 'iPhone'}</span></a>`;
       const android = (cls) => `<a class="btn ${cls}" href="${esc(TENJIN_ANDROID + q)}" data-destination="android" target="_blank" rel="noopener" aria-label="Start your free trial on Google Play">${ANDROID}<span>${cls === 'primary' ? 'Start your free trial' : 'Android'}</span></a>`;
-      const web = `<a class="btn secondary" href="https://app.kygo.app/start?utm_source=kygo.app&amp;utm_medium=${esc(this._surface)}&amp;utm_campaign=${esc(this._slug)}" data-destination="web" target="_blank" rel="noopener" aria-label="Start Kygo on the web">${GLOBE}<span>Web</span></a>`;
+      const web = (cls) => `<a class="btn ${cls}" href="https://app.kygo.app/start?utm_source=kygo.app&amp;utm_medium=${esc(this._surface)}&amp;utm_campaign=${esc(this._slug)}" data-destination="web" target="_blank" rel="noopener" aria-label="Start Kygo on the web">${GLOBE}<span>${cls === 'primary' ? 'Start on the web' : 'Web'}</span></a>`;
       const pf = this._platform();
-      box.innerHTML = pf === 'android' ? android('primary') + ios('secondary') + web : ios('primary') + android('secondary') + web;
+      box.innerHTML = pf === 'ios' ? ios('primary') + android('secondary') + web('secondary')
+        : pf === 'android' ? android('primary') + ios('secondary') + web('secondary')
+        : web('primary') + ios('secondary') + android('secondary');
     }
 
     _onClick(e) {

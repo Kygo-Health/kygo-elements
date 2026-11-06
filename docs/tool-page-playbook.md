@@ -208,8 +208,9 @@ the blog template and the footer.
 
 **One app card, one section, same place on every page**: immediately after the first
 content section. It is the shared `<kygo-app-card>` (`kygo-app-card.js`), the same card the
-blog posts use: "Free 7-Day Trial" pill, headline, sub, three buttons (the visitor's own store
-filled, iPhone on desktop; the other store and Web as outline buttons; one row on a wide card,
+blog posts use: "Free 7-Day Trial" pill, headline, sub, three buttons in the same order as `<kygo-cta>` (the
+visitor's own device filled: a phone its store, "Start your free trial"; desktop Web, "Start on
+the web"; the other two as outline buttons; one row on a wide card,
 two-up under the filled button on phones), the price line (`note`; the tool pages pass "Free
 plan on web or in the app · Save 58% on yearly · Cancel anytime"), the "Works with" wearable
 logos, the App Store review on desktop (beside the logos on a wide card), and the app's Insights

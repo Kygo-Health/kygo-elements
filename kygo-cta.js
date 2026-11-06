@@ -622,10 +622,10 @@ class KygoCta extends HTMLElement {
     const apps = this.hasAttribute('apps') || String(this._getSetting('apps', '')) === 'true';
     const primaryCls = 'btn ' + (outline ? 'secondary' : 'primary');
     if (platform === 'ios') {
-      primary = ios(primaryCls, label || (mini ? 'Get the app' : 'Get the iPhone app'));
+      primary = ios(primaryCls, label || (mini ? 'Get the app' : 'Start your free trial'));
       alts = play('btn secondary', 'Android') + web('btn secondary', 'Web');
     } else if (platform === 'android') {
-      primary = play(primaryCls, label || (mini ? 'Get the app' : 'Get the Android app'));
+      primary = play(primaryCls, label || (mini ? 'Get the app' : 'Start your free trial'));
       alts = ios('btn secondary', 'iPhone') + web('btn secondary', 'Web');
     } else {
       primary = web(primaryCls, label || (mini ? 'Start free' : 'Start on the web'));
