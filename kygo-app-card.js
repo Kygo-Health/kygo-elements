@@ -680,7 +680,7 @@
       this.shadowRoot.innerHTML = `
         <style>
           @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
-          :host { display: block; padding: 24px 0; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif; color: #0F172A; line-height: 1.5; }
+          :host { display: block; container: kac / inline-size; padding: 24px 0; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif; color: #0F172A; line-height: 1.5; }
           *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
           .card { position: relative; overflow: hidden; border-radius: 18px; padding: 22px 20px 0; color: #fff;
             background: radial-gradient(300px 200px at 100% 100%, rgba(34,197,94,.22), transparent 70%), #0F172A; }
@@ -693,7 +693,8 @@
           .btn svg { width: 16px; height: 16px; flex: none; }
           .btn.primary { background: #22C55E; color: #0F172A; }
           .btn.primary:hover { background: #4ADE80; }
-          .btn.secondary { color: #fff; border: 1px solid rgba(255,255,255,.22); font-weight: 600; }
+          .btn.secondary { color: #fff; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.3); font-weight: 600; }
+          .btn.secondary:hover { background: rgba(255,255,255,.12); }
           .btn.secondary:hover { border-color: #22C55E; }
           .btns.solo .btn { flex: 1; }
           /* Two buttons (iPhone + Android) need about 330px side by side, more
@@ -704,10 +705,10 @@
           .btn { max-width: 100%; }
           @media (max-width: 419px) { .btns .btn { flex: 1 1 100%; } }
           .review { display: none; }
-          .web { margin-top: 10px; font-size: 13px; color: rgba(255,255,255,.6); }
+          .web { margin-top: 6px; font-size: 13px; color: rgba(255,255,255,.6); }
           .web a { color: #fff; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
           .web a:hover { color: #6EE7A0; }
-          .note { margin-top: 10px; font-size: 13px; line-height: 1.45; color: rgba(255,255,255,.72); }
+          .note { margin-top: 8px; font-size: 13px; line-height: 1.45; color: rgba(255,255,255,.72); }
           .works { margin-top: 18px; }
           .works > span { display: block; margin-bottom: 8px; font-size: 12px; color: rgba(255,255,255,.55); }
           /* Eight equal columns, so the row never wraps one logo onto its own line. */
@@ -930,6 +931,14 @@
             .review figcaption { font-size: 11.5px; color: rgba(255,255,255,.5); }
             .review blockquote { font-size: 13px; line-height: 1.4; color: rgba(255,255,255,.88); }
           }
+          /* Wide card (tool pages on desktop): logos and the review share one row.
+             Narrower cards (the blog column) keep them stacked. */
+          @container kac (min-width: 920px) {
+            .meta { display: flex; align-items: center; gap: 20px; margin-top: 18px; }
+            .meta .works { flex: none; margin-top: 0; }
+            .meta .badges { width: 340px; }
+            .meta .review { flex: 1; min-width: 0; margin-top: 0; }
+          }
         </style>
         <aside class="card" aria-label="Kygo app">
           <p class="pill"><i></i>Free 7-Day Trial</p>
@@ -937,13 +946,15 @@
           <p class="sub">${esc(sub)}</p>
           <div class="btns">
           </div>
-          ${this.hasAttribute('web') ? `<p class="web">Or start on the <a href="https://app.kygo.app/start?utm_source=kygo.app&amp;utm_medium=${esc(this._surface)}&amp;utm_campaign=${esc(this._slug)}" data-destination="web" target="_blank" rel="noopener">web</a></p>` : ''}
           <p class="note">${esc(note)}</p>
+          ${this.hasAttribute('web') ? `<p class="web">Or start on the <a href="https://app.kygo.app/start?utm_source=kygo.app&amp;utm_medium=${esc(this._surface)}&amp;utm_campaign=${esc(this._slug)}" data-destination="web" target="_blank" rel="noopener">web</a></p>` : ''}
+          <div class="meta">
           <div class="works"><span>Works with</span><div class="badges">${BADGES}</div></div>
           <figure class="review">
             <div class="r-top"><span class="stars" aria-label="5 out of 5 stars">★★★★★</span><figcaption>App Store review</figcaption></div>
             <blockquote>“${esc(REVIEW)}”</blockquote>
           </figure>
+          </div>
           ${this._phone()}
         </aside>`;
     }
