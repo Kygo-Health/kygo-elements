@@ -34,6 +34,8 @@
  *   sub       one sentence under the headline.
  *   surface   blog (default) | tool. Goes to GA4 as the click position and to
  *             the web link's utm_medium.
+ *   note      the price line under the buttons. Default "7-day free trial.
+ *             Save 58% on yearly. Cancel anytime."
  *   web       boolean. Adds an "Or start on the web" link under the store
  *             buttons (tool pages, where all three platforms stay on screen).
  *
@@ -288,6 +290,18 @@
   const ANDROID = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 9v7a1 1 0 001 1h1v3a1 1 0 002 0v-3h4v3a1 1 0 002 0v-3h1a1 1 0 001-1V9H6zM4.5 9A1.5 1.5 0 003 10.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 004.5 9zm15 0a1.5 1.5 0 00-1.5 1.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 0019.5 9zM15.5 4.2l1-1.4a.3.3 0 00-.5-.35l-1.1 1.53a5.9 5.9 0 00-3.8 0L9.99 2.45a.3.3 0 00-.5.35l1 1.4A5.28 5.28 0 006 8.2h12a5.28 5.28 0 00-2.5-4zM9.5 6.4a.6.6 0 110-1.2.6.6 0 010 1.2zm5 0a.6.6 0 110-1.2.6.6 0 010 1.2z"/></svg>';
 
   /** One real App Store review, shown under the buttons on wider cards. */
+  /** "Works with" tiles, the same Wix logos the old tool-page card used. */
+  const BADGES = [
+    ['273a63_56ac2eb53faf43fab1903643b29c0bce', 'Oura Ring', 'Oura'],
+    ['273a63_1a1ba0e735ea4d4d865c04f7c9540e69', 'Apple Health', 'Apple'],
+    ['273a63_c451e954ff8740338204915f904d8798', 'Fitbit', 'Fitbit'],
+    ['273a63_0a60d1d6c15b421e9f0eca5c4c9e592b', 'Garmin', 'Garmin'],
+    ['273a63_874a026381ad469698b84e11a2736609', 'WHOOP', 'WHOOP', '#000'],
+    ['273a63_e7e3c05ed0bc4cec8f456cd7f995e70b', 'Polar', 'Polar'],
+    ['273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e', 'Google Health', 'Google'],
+    ['273a63_0c0e48cc065d4ee3bf506f6d47440518', 'Health Connect', 'Health']
+  ].map(([id, name, label, bg]) => `<span class="chip"><b${bg ? ` style="background:${bg}"` : ''}><img src="https://static.wixstatic.com/media/${id}~mv2.png" alt="${name}" title="${name}" loading="lazy"></b><em>${label}</em></span>`).join('');
+
   const REVIEW = 'Strikes the balance of seamlessness and data analytics perfectly.';
 
     class KygoAppCard extends HTMLElement {
@@ -298,7 +312,7 @@
       this._onClick = this._onClick.bind(this);
     }
 
-    static get observedAttributes() { return ['wixsettings', 'post', 'position', 'slug', 'variant', 'focus', 'headline', 'sub', 'surface', 'web']; }
+    static get observedAttributes() { return ['wixsettings', 'post', 'position', 'slug', 'variant', 'focus', 'headline', 'sub', 'surface', 'web', 'note']; }
 
     connectedCallback() {
       this._parseWixAttributes();
@@ -662,6 +676,7 @@
     render() {
       const headline = this._getSetting('headline', 'See what your food does to your sleep and HRV.');
       const sub = this._getSetting('sub', 'Kygo matches what you eat to the data your wearable already collects.');
+      const note = this._getSetting('note', '7-day free trial. Save 58% on yearly. Cancel anytime.');
       this.shadowRoot.innerHTML = `
         <style>
           @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
@@ -669,7 +684,8 @@
           *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
           .card { position: relative; overflow: hidden; border-radius: 18px; padding: 22px 20px 0; color: #fff;
             background: radial-gradient(300px 200px at 100% 100%, rgba(34,197,94,.22), transparent 70%), #0F172A; }
-          .kicker { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; color: #6EE7A0; margin-bottom: 8px; }
+          .pill { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 12px; padding: 5px 12px; border-radius: 999px; background: rgba(34,197,94,.16); border: 1px solid rgba(34,197,94,.25); color: #6EE7A0; font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 600; }
+          .pill i { width: 6px; height: 6px; border-radius: 50%; background: #22C55E; box-shadow: 0 0 8px #22C55E; }
           .title { font-family: 'Space Grotesk', sans-serif; font-size: 22px; line-height: 1.2; font-weight: 700; letter-spacing: -.01em; color: #fff; margin-bottom: 6px; }
           .sub { font-size: 14px; line-height: 1.45; color: rgba(255,255,255,.72); }
           .btns { margin-top: 16px; display: flex; gap: 10px; min-height: 48px; }
@@ -691,6 +707,16 @@
           .web { margin-top: 10px; font-size: 13px; color: rgba(255,255,255,.6); }
           .web a { color: #fff; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
           .web a:hover { color: #6EE7A0; }
+          .note { margin-top: 10px; font-size: 13px; line-height: 1.45; color: rgba(255,255,255,.72); }
+          .works { margin-top: 18px; }
+          .works > span { display: block; margin-bottom: 8px; font-size: 12px; color: rgba(255,255,255,.55); }
+          /* Eight equal columns, so the row never wraps one logo onto its own line. */
+          .badges { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 4px; max-width: 360px; }
+          .chip { display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 0; }
+          .chip b { width: 100%; max-width: 34px; aspect-ratio: 1; border-radius: 9px; background: #fff; overflow: hidden; display: block; }
+          .chip img { width: 100%; height: 100%; object-fit: cover; display: block; }
+          .chip em { font-style: normal; font-size: 9px; font-weight: 600; color: rgba(255,255,255,.6); white-space: nowrap; }
+          @media (max-width: 379px) { .badges { gap: 3px; } .chip em { font-size: 7.5px; } }
 
           .phone { position: relative; width: 236px; height: 400px; margin: 20px auto -210px; padding: 7px; border-radius: 40px;
             background: linear-gradient(160deg, #334155, #0B1220); box-shadow: 0 0 0 1px rgba(255,255,255,.10), 0 40px 70px -24px rgba(0,0,0,.75); }
@@ -906,12 +932,14 @@
           }
         </style>
         <aside class="card" aria-label="Kygo app">
-          <p class="kicker">Kygo app</p>
+          <p class="pill"><i></i>Free 7-Day Trial</p>
           <h3 class="title">${esc(headline)}</h3>
           <p class="sub">${esc(sub)}</p>
           <div class="btns">
           </div>
           ${this.hasAttribute('web') ? `<p class="web">Or start on the <a href="https://app.kygo.app/start?utm_source=kygo.app&amp;utm_medium=${esc(this._surface)}&amp;utm_campaign=${esc(this._slug)}" data-destination="web" target="_blank" rel="noopener">web</a></p>` : ''}
+          <p class="note">${esc(note)}</p>
+          <div class="works"><span>Works with</span><div class="badges">${BADGES}</div></div>
           <figure class="review">
             <div class="r-top"><span class="stars" aria-label="5 out of 5 stars">★★★★★</span><figcaption>App Store review</figcaption></div>
             <blockquote>“${esc(REVIEW)}”</blockquote>
