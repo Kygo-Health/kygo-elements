@@ -34,8 +34,8 @@
  *   sub       one sentence under the headline.
  *   surface   blog (default) | tool. Goes to GA4 as the click position and to
  *             the web link's utm_medium.
- *   note      the price line under the buttons. Default "7-day free trial.
- *             Save 58% on yearly. Cancel anytime."
+ *   note      the price line under the buttons. Default "Save 58% on yearly ·
+ *             Cancel anytime". Tool pages pass the free-plan line.
  *   web       boolean. Adds an "Or start on the web" link under the store
  *             buttons (tool pages, where all three platforms stay on screen).
  *
@@ -676,7 +676,7 @@
     render() {
       const headline = this._getSetting('headline', 'See what your food does to your sleep and HRV.');
       const sub = this._getSetting('sub', 'Kygo matches what you eat to the data your wearable already collects.');
-      const note = this._getSetting('note', '7-day free trial. Save 58% on yearly. Cancel anytime.');
+      const note = this._getSetting('note', 'Save 58% on yearly · Cancel anytime');
       this.shadowRoot.innerHTML = `
         <style>
           @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
