@@ -208,9 +208,13 @@ the blog template and the footer.
 
 **One app card, one section, same place on every page**: immediately after the first
 content section. It is the shared `<kygo-app-card>` (`kygo-app-card.js`), the same card the
-blog posts use: kicker, headline, sub, store buttons (the visitor's own store on a phone,
-iPhone plus Android on desktop), an "Or start on the web" link (`web` attribute), the App
-Store review on desktop, and the app's Insights screen on a phone mockup. Copy
+blog posts use: "Free 7-Day Trial" pill, headline, sub, three buttons (the visitor's own store
+filled, iPhone on desktop; the other store and Web as outline buttons; one row on a wide card,
+two-up under the filled button on phones), the price line (`note`; the tool pages pass "Free
+plan on web or in the app · Save 58% on yearly · Cancel anytime"), the "Works with" wearable
+logos, the App Store review on desktop (beside the logos on a wide card), and the app's Insights
+screen on a phone mockup. Content is centred on phones. Since 2026-11-06 (the three buttons,
+pill, price line and logos came back from the old dark card). Copy
 `_renderAppCta(bg)` and the `__ensureKygoAppCard()` loader verbatim; the only per-page part is:
 
 ```js
