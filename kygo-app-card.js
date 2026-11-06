@@ -36,7 +36,7 @@
  *             the web link's utm_medium.
  *   note      the price line under the buttons. Default "Save 58% on yearly ·
  *             Cancel anytime". Tool pages pass the free-plan line.
- *   web       boolean. Adds an "Or start on the web" link under the store
+ *   web       no longer used (every card now has a Web button). Was: adds an "Or start on the web" link under the store
  *             buttons (tool pages, where all three platforms stay on screen).
  *
  * On a tool page the card is not in an iframe: there are no messages to post,
@@ -287,6 +287,7 @@
   };
 
   const APPLE = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.05 12.5c-.02-2.1 1.71-3.11 1.79-3.16-.98-1.43-2.5-1.62-3.03-1.64-1.29-.13-2.52.76-3.17.76-.65 0-1.66-.74-2.73-.72-1.4.02-2.7.82-3.42 2.07-1.46 2.54-.37 6.3 1.05 8.36.7 1.01 1.53 2.14 2.62 2.1 1.05-.04 1.45-.68 2.72-.68 1.27 0 1.63.68 2.74.66 1.13-.02 1.85-1.03 2.54-2.04.8-1.17 1.13-2.3 1.15-2.36-.03-.01-2.2-.84-2.22-3.35zM15.02 5.9c.58-.7.97-1.68.86-2.65-.83.03-1.84.55-2.44 1.25-.53.62-1 1.61-.88 2.56.93.07 1.88-.47 2.46-1.16z"/></svg>';
+  const GLOBE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9S14.5 18.3 12 21c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg>';
   const ANDROID = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 9v7a1 1 0 001 1h1v3a1 1 0 002 0v-3h4v3a1 1 0 002 0v-3h1a1 1 0 001-1V9H6zM4.5 9A1.5 1.5 0 003 10.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 004.5 9zm15 0a1.5 1.5 0 00-1.5 1.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 0019.5 9zM15.5 4.2l1-1.4a.3.3 0 00-.5-.35l-1.1 1.53a5.9 5.9 0 00-3.8 0L9.99 2.45a.3.3 0 00-.5.35l1 1.4A5.28 5.28 0 006 8.2h12a5.28 5.28 0 00-2.5-4zM9.5 6.4a.6.6 0 110-1.2.6.6 0 010 1.2zm5 0a.6.6 0 110-1.2.6.6 0 010 1.2z"/></svg>';
 
   /** One real App Store review, shown under the buttons on wider cards. */
@@ -377,8 +378,9 @@
     /** Store buttons. The Tenjin Website-channel links are owned by kygo-cta.js
      *  (loaded first, read here as TENJIN_IOS / TENJIN_ANDROID); this adds the
      *  post as site_id and variant-position as creative_name, so installs read
-     *  per post and per design in Tenjin. A phone gets its own store alone,
-     *  desktop gets iPhone filled plus Android. */
+     *  per post and per design in Tenjin. All three platforms stay on screen,
+     *  as on the old dark card: the visitor's own store filled (iPhone on
+     *  desktop), the other store and Web as outline buttons. */
     _wireStoreLinks() {
       const box = this.shadowRoot.querySelector('.btns');
       if (!box || typeof TENJIN_IOS === 'undefined' || typeof TENJIN_ANDROID === 'undefined') return;
@@ -386,9 +388,9 @@
         '&creative_name=' + encodeURIComponent('app-card-' + this._variant + '-' + this._position);
       const ios = (cls) => `<a class="btn ${cls}" href="${esc(TENJIN_IOS + q)}" data-destination="ios" target="_blank" rel="noopener" aria-label="Start your free trial on the App Store">${APPLE}<span>${cls === 'primary' ? 'Start your free trial' : 'iPhone'}</span></a>`;
       const android = (cls) => `<a class="btn ${cls}" href="${esc(TENJIN_ANDROID + q)}" data-destination="android" target="_blank" rel="noopener" aria-label="Start your free trial on Google Play">${ANDROID}<span>${cls === 'primary' ? 'Start your free trial' : 'Android'}</span></a>`;
+      const web = `<a class="btn secondary" href="https://app.kygo.app/start?utm_source=kygo.app&amp;utm_medium=${esc(this._surface)}&amp;utm_campaign=${esc(this._slug)}" data-destination="web" target="_blank" rel="noopener" aria-label="Start Kygo on the web">${GLOBE}<span>Web</span></a>`;
       const pf = this._platform();
-      box.classList.toggle('solo', pf !== 'desktop');
-      box.innerHTML = pf === 'ios' ? ios('primary') : pf === 'android' ? android('primary') : ios('primary') + android('secondary');
+      box.innerHTML = pf === 'android' ? android('primary') + ios('secondary') + web : ios('primary') + android('secondary') + web;
     }
 
     _onClick(e) {
@@ -696,14 +698,17 @@
           .btn.secondary { color: #fff; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.3); font-weight: 600; }
           .btn.secondary:hover { background: rgba(255,255,255,.12); }
           .btn.secondary:hover { border-color: #22C55E; }
-          .btns.solo .btn { flex: 1; }
-          /* Two buttons (iPhone + Android) need about 330px side by side, more
-             than a phone-width card has inside its padding, and the card clips
-             (overflow: hidden). Let the row wrap, and on narrow screens stack
-             both buttons full width so neither is ever cut off. */
-          .btns { flex-wrap: wrap; }
-          .btn { max-width: 100%; }
-          @media (max-width: 419px) { .btns .btn { flex: 1 1 100%; } }
+          /* Three buttons. Narrow cards (phones, the blog column): the filled
+             button full width, the two outline buttons side by side under it.
+             Wide cards (tool pages on desktop): all three on one row. */
+          .btns { display: grid; grid-template-columns: 1fr 1fr; }
+          .btns .primary { grid-column: 1 / -1; }
+          .btn { min-width: 0; padding: 0 12px; }
+          @container kac (min-width: 920px) {
+            .btns { display: flex; }
+            .btns .primary { padding: 0 22px; }
+            .btns .secondary { padding: 0 18px; }
+          }
           .review { display: none; }
           .web { margin-top: 6px; font-size: 13px; color: rgba(255,255,255,.6); }
           .web a { color: #fff; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
@@ -954,7 +959,6 @@
           <div class="btns">
           </div>
           <p class="note">${esc(note)}</p>
-          ${this.hasAttribute('web') ? `<p class="web">Or start on the <a href="https://app.kygo.app/start?utm_source=kygo.app&amp;utm_medium=${esc(this._surface)}&amp;utm_campaign=${esc(this._slug)}" data-destination="web" target="_blank" rel="noopener">web</a></p>` : ''}
           <div class="meta">
           <div class="works"><span>Works with</span><div class="badges">${BADGES}</div></div>
           <figure class="review">
